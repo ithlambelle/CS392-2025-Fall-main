@@ -4,13 +4,13 @@
 public class Assign04_04 {
     //
     // HX-2025-09-30:
-    // implement a method that uses irforitm to find all elements
+    // implement a method that uses iforitm to find all elements
     // in a functional list that are greater than their index position
     //
     public static FnList<Integer> elementsGreaterThanIndex(FnList<Integer> xs) {
         FnList<Integer>[] result = new FnList[1];
         result[0] = new FnList<>();
-        xs.irforitm((i, x) -> {
+        xs.iforitm((i, x) -> {
             if (x > i) {
                 result[0] = new FnList<>(x, result[0]);
             }
