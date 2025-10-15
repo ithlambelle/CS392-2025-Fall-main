@@ -157,4 +157,103 @@ public class FnListUtil {
 	return FnListUtil.folditm(xs.reverse(), r0, (x1, r1) -> fopr.apply(r1, x1));
     }
 //
+    // Additional utility methods for exams and advanced usage
+    public static<T>
+	FnList<T> filter(FnList<T> xs, Predicate<? super T> pred) {
+	FnList<T> res = new FnList<T>();
+	while (true) {
+	    if (xs.nilq()) break;
+	    if (pred.test(xs.hd())) {
+		res = new FnList<T>(xs.hd(), res);
+	    }
+	    xs = xs.tl();
+	}
+	return res.reverse();
+    }
+    
+    public static<T>
+	FnList<T> take(FnList<T> xs, int n) {
+	FnList<T> res = new FnList<T>();
+	int count = 0;
+	while (!xs.nilq() && count < n) {
+	    res = new FnList<T>(xs.hd(), res);
+	    xs = xs.tl();
+	    count++;
+	}
+	return res.reverse();
+    }
+    
+    public static<T>
+	FnList<T> drop(FnList<T> xs, int n) {
+	int count = 0;
+	while (!xs.nilq() && count < n) {
+	    xs = xs.tl();
+	    count++;
+	}
+	return xs;
+    }
+    
+    public static<T>
+	T nth(FnList<T> xs, int n) {
+	int count = 0;
+	while (!xs.nilq()) {
+	    if (count == n) return xs.hd();
+	    xs = xs.tl();
+	    count++;
+	}
+	throw new IndexOutOfBoundsException("Index " + n + " out of bounds");
+    }
+    
+    public static<T>
+	FnList<T> append(FnList<T> xs, FnList<T> ys) {
+	return FnListUtil.folditm(xs.reverse(), ys, (r1, x1) -> new FnList<T>(x1, r1));
+    }
+    
+    public static<T>
+	FnList<T> concat(FnList<FnList<T>> xss) {
+	FnList<T> res = new FnList<T>();
+	while (!xss.nilq()) {
+	    res = FnListUtil.append(res, xss.hd());
+	    xss = xss.tl();
+	}
+	return res;
+    }
+    
+    public static<T>
+	FnList<T> flatten(FnList<FnList<T>> xss) {
+	return FnListUtil.concat(xss);
+    }
+    
+    public static<T>
+	FnList<T> zipWith(FnList<T> xs, FnList<T> ys, BiFunction<T, T, T> f) {
+	FnList<T> res = new FnList<T>();
+	while (!xs.nilq() && !ys.nilq()) {
+	    res = new FnList<T>(f.apply(xs.hd(), ys.hd()), res);
+	    xs = xs.tl();
+	    ys = ys.tl();
+	}
+	return res.reverse();
+    }
+    
+    public static<T>
+	FnList<T> replicate(int n, T x) {
+	FnList<T> res = new FnList<T>();
+	for (int i = 0; i < n; i++) {
+	    res = new FnList<T>(x, res);
+	}
+	return res;
+    }
+    
+    public static<T>
+	FnList<T> cycle(FnList<T> xs) {
+	if (xs.nilq()) return xs;
+	FnList<T> original = xs;
+	FnList<T> res = new FnList<T>();
+	while (!xs.nilq()) {
+	    res = new FnList<T>(xs.hd(), res);
+	    xs = xs.tl();
+	}
+	return FnListUtil.append(res.reverse(), cycle(original));
+    }
+//
 } // end of [public class FnListUtil{...}]
