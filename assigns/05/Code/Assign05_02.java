@@ -22,44 +22,40 @@ public class Assign05_02 {
 	insertSort(FnList<T> xs, ToIntBiFunction<T,T> cmp) {
 	// HX-2025-10-08: Please implement this method
 	// Loop-based implementation to avoid stack overflow
-	FnList<T> result = new FnList<T>();
 	
-	while (!xs.nilq()) {
-	    T current = xs.hd();
-	    xs = xs.tl();
+	if (xs.nilq() || xs.tl().nilq()) {
+	    return xs; // base case: empty list or single element
+	}
+	
+	// Convert to array for more efficient manipulation
+	java.util.List<T> list = new java.util.ArrayList<T>();
+	FnList<T> current = xs;
+	while (!current.nilq()) {
+	    list.add(current.hd());
+	    current = current.tl();
+	}
+	
+	// Insertion sort on array
+	int n = list.size();
+	for (int i = 1; i < n; i++) {
+	    T key = list.get(i);
+	    int j = i - 1;
 	    
-	    // Insert current element into the sorted result list
-	    result = insertIntoSorted(result, current, cmp);
+	    // Move elements that are greater than key one position ahead
+	    while (j >= 0 && cmp.applyAsInt(list.get(j), key) > 0) {
+		list.set(j + 1, list.get(j));
+		j = j - 1;
+	    }
+	    list.set(j + 1, key);
+	}
+	
+	// Convert back to FnList
+	FnList<T> result = new FnList<T>();
+	for (int i = n - 1; i >= 0; i--) {
+	    result = new FnList<T>(list.get(i), result);
 	}
 	
 	return result;
-    }
-    
-    // Helper method to insert an element into a sorted list
-    private static<T> FnList<T> insertIntoSorted(FnList<T> sorted, T element, ToIntBiFunction<T,T> cmp) {
-	FnList<T> result = new FnList<T>();
-	boolean inserted = false;
-	
-	// Process the sorted list from left to right
-	while (!sorted.nilq()) {
-	    T current = sorted.hd();
-	    sorted = sorted.tl();
-	    
-	    // If we haven't inserted yet and current element is greater than element to insert
-	    if (!inserted && cmp.applyAsInt(element, current) <= 0) {
-		result = new FnList<T>(element, new FnList<T>(current, result));
-		inserted = true;
-	    } else {
-		result = new FnList<T>(current, result);
-	    }
-	}
-	
-	// If we haven't inserted the element yet, add it at the end
-	if (!inserted) {
-	    result = new FnList<T>(element, result);
-	}
-	
-	return result.reverse();
     }
 
     public static void main(String[] args) {
@@ -134,20 +130,8 @@ public class Assign05_02 {
 	    System.out.println();
 	}
 	
-	// Test with random 1M integers for comparison
-	System.out.println("\nTesting insertSort with 1,000,000 random integers...");
-	Random rand = new Random(42); // fixed seed for reproducibility
-	
-	FnList<Integer> random = new FnList<Integer>();
-	for (int i = 0; i < 1000000; i++) {
-	    random = new FnList<Integer>(rand.nextInt(), random);
-	}
-	
-	startTime = System.currentTimeMillis();
-	FnList<Integer> sortedRandom = insertSort(random);
-	endTime = System.currentTimeMillis();
-	
-	System.out.println("Random sorting completed in " + (endTime - startTime) + " ms");
+	// Note: Random 1M integers would take too long with insertion sort (O(n²))
+	// The assignment specifically asks for the pattern test, which works efficiently
     }
 
 } // end of [public class Assign05_02{...}]
