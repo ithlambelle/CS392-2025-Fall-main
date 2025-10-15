@@ -16,7 +16,11 @@ public class Assign03_02 {
             
             // if it's an opening bracket, push it
             if (c == '(' || c == '[' || c == '{') {
-                stack.push$raw(c);
+                try {
+                    stack.push$exn(c);
+                } catch (Exception e) {
+                    return false; // stack is full, can't balance
+                }
             }
             // if it's a closing bracket, check if it matches
             else if (c == ')' || c == ']' || c == '}') {

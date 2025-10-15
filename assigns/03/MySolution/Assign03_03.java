@@ -34,11 +34,8 @@ public class Assign03_03<T> extends MyQueueBase<T> {
         // if front list is empty, transfer from rear list
         if (frnt.nilq()) {
             // transfer all elements from rear to front (reversing them)
-            while (!rear.nilq()) {
-                T item = rear.hd();
-                rear = rear.tl();
-                frnt = new FnList<T>(item, frnt);
-            }
+            frnt = rear.reverse();
+            rear = new FnList<T>();
         }
         
         // now dequeue from front list
@@ -53,6 +50,47 @@ public class Assign03_03<T> extends MyQueueBase<T> {
         // add item to rear list
         rear = new FnList<T>(itm, rear);
         nitm++;
+    }
+    
+    public void foritm(java.util.function.Consumer<? super T> action) {
+        // HX: Please implement
+        // iterate through queue elements in order (front to rear)
+        FnList<T> current = frnt;
+        FnList<T> reversedRear = rear.reverse();
+        
+        // iterate through front list
+        while (!current.nilq()) {
+            action.accept(current.hd());
+            current = current.tl();
+        }
+        
+        // iterate through reversed rear list
+        while (!reversedRear.nilq()) {
+            action.accept(reversedRear.hd());
+            reversedRear = reversedRear.tl();
+        }
+    }
+    
+    public void iforitm(java.util.function.BiConsumer<Integer, ? super T> action) {
+        // HX: Please implement
+        // iterate through queue elements in order (front to rear)
+        FnList<T> current = frnt;
+        FnList<T> reversedRear = rear.reverse();
+        int index = 0;
+        
+        // iterate through front list
+        while (!current.nilq()) {
+            action.accept(index, current.hd());
+            current = current.tl();
+            index++;
+        }
+        
+        // iterate through reversed rear list
+        while (!reversedRear.nilq()) {
+            action.accept(index, reversedRear.hd());
+            reversedRear = reversedRear.tl();
+            index++;
+        }
     }
     
     // test method
