@@ -13,16 +13,7 @@ public class Quiz01_05 {
 	// of the LnList class. You can only use the public methods
 	// provided by the LnList class
 	
-	if (xs.nilq1()) {
-	    return xs; // empty list is already sorted
-	}
-	
-	// We need to rearrange existing nodes without creating new ones
-	// This is a complex operation that requires careful manipulation
-	// of the existing nodes using only public methods
-	
-	// For quicksort, we need to partition the list around a pivot
-	// and recursively sort the partitions
+	if (xs.nilq1() || xs.tl1().nilq1()) return xs;
 	
 	// Choose random pivot
 	int count = 0;
@@ -41,52 +32,35 @@ public class Quiz01_05 {
 	T pivotValue = pivot.hd1();
 	
 	// Partition the list around the pivot
-	LnList<T> left = new LnList<T>();
-	LnList<T> right = new LnList<T>();
-	LnList<T> current = xs;
-	
-	while (!current.nilq1()) {
-	    T value = current.hd1();
-	    LnList<T> next = current.tl1();
-	    
-	    if (value.compareTo(pivotValue) < 0) {
-		// Add to left partition
-		if (left.nilq1()) {
-		    left = current;
-		} else {
-		    left.append1(current);
-		}
-	    } else if (value.compareTo(pivotValue) > 0) {
-		// Add to right partition
-		if (right.nilq1()) {
-		    right = current;
-		} else {
-		    right.append1(current);
-		}
-	    }
-	    
-	    current = next;
-	}
+	LnList<T> left = partition(xs, pivotValue, true);  // < pivot
+	LnList<T> right = partition(xs, pivotValue, false); // > pivot
 	
 	// Recursively sort partitions
-	LnList<T> sortedLeft = LnListQuickSort(left);
-	LnList<T> sortedRight = LnListQuickSort(right);
+	left = LnListQuickSort(left);
+	right = LnListQuickSort(right);
 	
-	// Combine results
-	if (sortedLeft.nilq1()) {
-	    if (sortedRight.nilq1()) {
-		return pivot;
-	    } else {
-		pivot.link(sortedRight);
-		return pivot;
-	    }
+	// Combine results: left + pivot + right
+	return concat(left, new LnList<T>(pivotValue, right));
+    }
+    
+    private static <T extends Comparable<T>> LnList<T> partition(LnList<T> xs, T pivot, boolean lessThan) {
+	if (xs.nilq1()) return new LnList<T>();
+	
+	T head = xs.hd1();
+	LnList<T> tail = xs.tl1();
+	
+	boolean shouldInclude = lessThan ? head.compareTo(pivot) < 0 : head.compareTo(pivot) > 0;
+	
+	if (shouldInclude) {
+	    return new LnList<T>(head, partition(tail, pivot, lessThan));
 	} else {
-	    sortedLeft.append1(pivot);
-	    if (!sortedRight.nilq1()) {
-		pivot.link(sortedRight);
-	    }
-	    return sortedLeft;
+	    return partition(tail, pivot, lessThan);
 	}
+    }
+    
+    private static <T extends Comparable<T>> LnList<T> concat(LnList<T> a, LnList<T> b) {
+	if (a.nilq1()) return b;
+	return new LnList<T>(a.hd1(), concat(a.tl1(), b));
     }
     
     public static void main (String[] args) {

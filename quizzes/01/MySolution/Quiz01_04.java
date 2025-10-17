@@ -14,61 +14,18 @@ public class Quiz01_04 {
 	// of the LnList class. You can only use the public methods
 	// provided by the LnList class
 	
-	if (xs.nilq1()) {
-	    return xs; // empty list is already sorted
+	if (xs.nilq1() || xs.tl1().nilq1()) return xs;
+
+	return insertSorted(LnListInsertSort(xs.tl1()), xs.hd1());
+    }
+    
+    private static <T extends Comparable<T>> LnList<T> insertSorted(LnList<T> sorted, T x) {
+	if (sorted.nilq1() || x.compareTo(sorted.hd1()) < 0) {
+	    return new LnList<T>(x, sorted);
+	} else {
+	    // preserve stability (equal keys stay before the new x)
+	    return new LnList<T>(sorted.hd1(), insertSorted(sorted.tl1(), x));
 	}
-	
-	// We need to rearrange existing nodes without creating new ones
-	// This is a complex operation that requires careful manipulation
-	// of the existing nodes using only public methods
-	
-	// Start with the first element as the sorted portion
-	LnList<T> sorted = xs;
-	LnList<T> current = xs.tl1();
-	
-	// Process each remaining element
-	while (!current.nilq1()) {
-	    T currentValue = current.hd1();
-	    LnList<T> next = current.tl1();
-	    
-	    // Find the correct position in the sorted portion
-	    LnList<T> prev = null;
-	    LnList<T> temp = sorted;
-	    
-	    while (!temp.nilq1() && temp.hd1().compareTo(currentValue) <= 0) {
-		prev = temp;
-		temp = temp.tl1();
-	    }
-	    
-	    // Remove current node from its current position
-	    if (prev == null) {
-		// Current is already at the beginning, no need to move
-		sorted = current;
-	    } else {
-		// Unlink current from its current position
-		prev.unlink();
-		// Link current to the next element
-		current.link(next);
-		
-		// Insert current at the correct position
-		if (temp.nilq1()) {
-		    // Insert at the end
-		    prev.link(current);
-		} else {
-		    // Insert in the middle
-		    current.link(temp);
-		    if (prev.nilq1()) {
-			sorted = current;
-		    } else {
-			prev.link(current);
-		    }
-		}
-	    }
-	    
-	    current = next;
-	}
-	
-	return sorted;
     }
     
     public static void main (String[] args) {
