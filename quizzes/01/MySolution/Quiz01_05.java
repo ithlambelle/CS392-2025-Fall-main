@@ -44,9 +44,9 @@ public class Quiz01_05 {
 
     // detach every node from src and append to one of {less, equal, greater} by relinking tails.
     private static <T extends Comparable<T>> Part<T> partitionDetach(LnList<T> src, T pivot) {
-	LnList<T> lessH = LnListSUtil.nil(), lessT = LnListSUtil.nil();
-	LnList<T> eqH   = LnListSUtil.nil(), eqT   = LnListSUtil.nil();
-	LnList<T> gtH   = LnListSUtil.nil(), gtT   = LnListSUtil.nil();
+	LnList<T> lessH = new LnList<T>(), lessT = new LnList<T>();
+	LnList<T> eqH   = new LnList<T>(), eqT   = new LnList<T>();
+	LnList<T> gtH   = new LnList<T>(), gtT   = new LnList<T>();
 
 	while (!src.nilq1()) {
 	    LnList<T> node = src;      // take head node
