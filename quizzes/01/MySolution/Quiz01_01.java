@@ -66,6 +66,13 @@ public class Quiz01_01 {
 	    System.out.println("Key \"" + key + "\" -> Index " + result);
 	}
 	
+	// Test with empty array
+	Integer[] emptyArray = {};
+	FnA1sz<Integer> emptyFnArray = new FnA1sz<>(emptyArray);
+	System.out.println("\nTesting with empty array:");
+	int emptyResult = FnA1szBinarySearch(emptyFnArray, 5);
+	System.out.println("Key 5 in empty array -> Index " + emptyResult);
+	
 	return /*void*/;
     }
 }
