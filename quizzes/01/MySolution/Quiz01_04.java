@@ -128,5 +128,23 @@ public class Quiz01_04 {
 	System.out.print("Output: ");
 	sortedSingleList.System$out$print1();
 	System.out.println();
+	
+	// Test with duplicate elements
+	System.out.println("\nTesting LnListInsertSort with duplicate elements:");
+	LnList<Integer> dupList = new LnList<Integer>();
+	dupList.append1(new LnList<Integer>(3, new LnList<Integer>()));
+	dupList.append1(new LnList<Integer>(1, new LnList<Integer>()));
+	dupList.append1(new LnList<Integer>(3, new LnList<Integer>()));
+	dupList.append1(new LnList<Integer>(2, new LnList<Integer>()));
+	dupList.append1(new LnList<Integer>(1, new LnList<Integer>()));
+	
+	System.out.print("Input: ");
+	dupList.System$out$print1();
+	System.out.println();
+	
+	LnList<Integer> sortedDupList = LnListInsertSort(dupList);
+	System.out.print("Output: ");
+	sortedDupList.System$out$print1();
+	System.out.println();
     }
 }
