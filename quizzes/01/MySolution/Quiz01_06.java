@@ -125,5 +125,21 @@ abstract public class Quiz01_06 {
 	    first20 = first20.tl();
 	}
 	System.out.println();
+	
+	// Test with reverse sorted list
+	System.out.println("\nTesting with reverse sorted list:");
+	FnList<Integer> reverseList = FnListSUtil.nil();
+	for (int i = 0; i < 10; i++) {
+	    reverseList = FnListSUtil.cons(i, reverseList);
+	}
+	
+	System.out.print("Input: ");
+	reverseList.System$out$print();
+	System.out.println();
+	
+	FnList<Integer> reverseStableResult = someStableSort(reverseList, parityCmp);
+	System.out.print("Output: ");
+	reverseStableResult.System$out$print();
+	System.out.println();
     }
 }
