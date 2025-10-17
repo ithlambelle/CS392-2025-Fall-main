@@ -19,110 +19,30 @@ public class Quiz01_03 {
 	// HX: Yes, you can use functions (but not recursive functions)
 	// HX: Please do not try to write a HUGH if-then-else mumble jumble!
 	
-	// We'll use a simple approach: find each position by comparing all elements
-	// and excluding the ones we've already placed
-	
-	// Position 0: Find the minimum element
-	T pos0 = min(x0, min(x1, min(x2, min(x3, min(x4, min(x5, min(x6, min(x7, min(x8, x9)))))))));
-	
-	// Position 1: Find the second minimum element
-	T pos1 = min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 1),
-		     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 2),
-			 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 3),
-			     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 4),
-				 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 5),
-				     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 6),
-					 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 7),
-					     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 8),
-						 select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 9)))))))));
-	
-	// Position 2: Find the third minimum element
-	T pos2 = min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 2),
-		     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 3),
-			 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 4),
-			     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 5),
-				 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 6),
-				     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 7),
-					 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 8),
-					     select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 9))))))));
-	
-	// Position 3: Find the fourth minimum element
-	T pos3 = min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 3),
-		     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 4),
-			 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 5),
-			     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 6),
-				 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 7),
-				     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 8),
-					 select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 9)))))));
-	
-	// Position 4: Find the fifth minimum element
-	T pos4 = min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 4),
-		     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 5),
-			 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 6),
-			     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 7),
-				 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 8),
-				     select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 9))))));
-	
-	// Position 5: Find the sixth minimum element
-	T pos5 = min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 5),
-		     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 6),
-			 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 7),
-			     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 8),
-				 select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 9)))));
-	
-	// Position 6: Find the seventh minimum element
-	T pos6 = min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 6),
-		     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 7),
-			 min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 8),
-			     select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 9))));
-	
-	// Position 7: Find the eighth minimum element
-	T pos7 = min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 7),
-		     min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 8),
-			 select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 9)));
-	
-	// Position 8: Find the ninth minimum element
-	T pos8 = min(select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 8),
-		     select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 9));
-	
-	// Position 9: Find the tenth minimum element (maximum)
-	T pos9 = select(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, 9);
-	
-	// Create and return the sorted array
+	final class Ref<U> { U v; Ref(U v){ this.v = v; } }
+	Ref<T> r0=new Ref<>(x0), r1=new Ref<>(x1), r2=new Ref<>(x2), r3=new Ref<>(x3), r4=new Ref<>(x4),
+	       r5=new Ref<>(x5), r6=new Ref<>(x6), r7=new Ref<>(x7), r8=new Ref<>(x8), r9=new Ref<>(x9);
+
+	java.util.function.BiConsumer<Ref<T>,Ref<T>> cs = (a,b) -> {
+	    if (a.v.compareTo(b.v) > 0) { T t=a.v; a.v=b.v; b.v=t; }
+	};
+
+	// 9 bubble passes, fully unrolled (no arrays/lists/loops)
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+
 	@SuppressWarnings("unchecked")
-	T[] result = (T[]) java.lang.reflect.Array.newInstance(pos0.getClass(), 10);
-	result[0] = pos0; result[1] = pos1; result[2] = pos2; result[3] = pos3; result[4] = pos4;
-	result[5] = pos5; result[6] = pos6; result[7] = pos7; result[8] = pos8; result[9] = pos9;
-	return result;
-    }
-    
-    // Helper function to select the nth element (0-indexed)
-    private static <T extends Comparable<T>>
-    T select(T x0, T x1, T x2, T x3, T x4, T x5, T x6, T x7, T x8, T x9, int n) {
-	switch (n) {
-	case 0: return x0;
-	case 1: return x1;
-	case 2: return x2;
-	case 3: return x3;
-	case 4: return x4;
-	case 5: return x5;
-	case 6: return x6;
-	case 7: return x7;
-	case 8: return x8;
-	case 9: return x9;
-	default: return x0;
-	}
-    }
-    
-    // Helper functions for min and max
-    private static <T extends Comparable<T>>
-    T min(T a, T b) {
-	return (a.compareTo(b) <= 0) ? a : b;
-    }
-    
-    private static <T extends Comparable<T>>
-    T max(T a, T b) {
-	return (a.compareTo(b) >= 0) ? a : b;
+	T[] out = (T[]) java.lang.reflect.Array.newInstance(r0.v.getClass(), 10);
+	out[0] = r0.v; out[1] = r1.v; out[2] = r2.v; out[3] = r3.v; out[4] = r4.v;
+	out[5] = r5.v; out[6] = r6.v; out[7] = r7.v; out[8] = r8.v; out[9] = r9.v;
+	return out;
     }
     
     public static void main(String[] args) {
