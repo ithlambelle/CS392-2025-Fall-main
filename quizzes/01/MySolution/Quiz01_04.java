@@ -16,23 +16,23 @@ public class Quiz01_04 {
 	
 	if (head.nilq1() || head.tl1().nilq1()) return head;
 
-	// 'sorted' is the head of the sorted prefix we build
-	LnList<T> sorted = head;                 // first node is trivially sorted
+	// sorted = first node (detach its tail)
+	LnList<T> sorted = head;
 	LnList<T> unsorted = head.tl1();
-	sorted.unlink();                         // detach sorted prefix to a single-node list
+	sorted.link(LnListSUtil.nil());     // make sorted a 1-node chain
 
+	// take nodes from unsorted and splice into sorted at the first position with hd > x  (strict > to keep stability)
 	while (!unsorted.nilq1()) {
-	    // take 'node' from unsorted
-	    LnList<T> node = unsorted;
+	    LnList<T> node = unsorted;      // detach node from unsorted
 	    unsorted = unsorted.tl1();
-	    node.unlink();                       // detach node
+	    node.unlink();                   // node now stands alone
 
-	    // insert 'node' into 'sorted' at the first position where hd > node.hd (stable: only >, not >=)
 	    if (node.hd1().compareTo(sorted.hd1()) < 0) {
-		// insert at head
+		// insert at head of sorted
 		node.link(sorted);
 		sorted = node;
 	    } else {
+		// walk sorted with (prev, cur), stop at first cur.hd > node.hd
 		LnList<T> prev = sorted;
 		LnList<T> cur  = sorted.tl1();
 		while (!cur.nilq1() && cur.hd1().compareTo(node.hd1()) <= 0) {
@@ -40,7 +40,6 @@ public class Quiz01_04 {
 		    cur  = cur.tl1();
 		}
 		// splice node between prev and cur
-		prev.unlink(); // unlink cur from prev
 		prev.link(node);
 		node.link(cur);
 	    }

@@ -15,49 +15,49 @@ public class Quiz01_05 {
 	
 	if (head.nilq1() || head.tl1().nilq1()) return head;
 
+	// count nodes to choose a random pivot index in [0, n)
 	int n = 0;
 	for (LnList<T> t = head; !t.nilq1(); t = t.tl1()) n++;
-	int pivotIdx = (int)(Math.random() * n);    // random in [0, n)
+	int pivotIdx = (int)(Math.random() * n);
 
-	// fetch pivot value without new nodes
+	// walk to pivot node and read pivot value
 	LnList<T> t = head;
 	for (int i = 0; i < pivotIdx; i++) t = t.tl1();
 	T pivot = t.hd1();
 
-	// partition by relinking nodes
+	// partition by detaching nodes from head into three chains (<, ==, >)
 	Part<T> p = partitionDetach(head, pivot);
 
 	// recurse on less and greater
-	LnList<T> lessSorted = LnListQuickSort(p.less);
+	LnList<T> lessSorted  = LnListQuickSort(p.less);
 	LnList<T> greatSorted = LnListQuickSort(p.greater);
 
-	// stitch: lessSorted -> equal -> greatSorted
+	// concatenate: lessSorted -> equal -> greatSorted
 	return concat3(lessSorted, p.equal, greatSorted);
     }
-    
-    // container for partition results
+
+    // hold the three chains for partition
     private static final class Part<U> {
 	LnList<U> less, equal, greater;
-	Part(LnList<U> l, LnList<U> e, LnList<U> g){ less=l; equal=e; greater=g; }
+	Part(LnList<U> l, LnList<U> e, LnList<U> g) { less = l; equal = e; greater = g; }
     }
 
-    // detach every node from 'head' and prepend into less/equal/greater chains.
-    // uses only tl getters/setters; no new node allocations.
-    private static <T extends Comparable<T>> Part<T> partitionDetach(LnList<T> head, T pivot) {
+    // detach every node from src and append to one of {less, equal, greater} by relinking tails.
+    private static <T extends Comparable<T>> Part<T> partitionDetach(LnList<T> src, T pivot) {
 	LnList<T> lessH = LnListSUtil.nil(), lessT = LnListSUtil.nil();
 	LnList<T> eqH   = LnListSUtil.nil(), eqT   = LnListSUtil.nil();
 	LnList<T> gtH   = LnListSUtil.nil(), gtT   = LnListSUtil.nil();
 
-	while (!head.nilq1()) {
-	    LnList<T> node = head;
-	    head = head.tl1();
-	    node.unlink(); // detach
+	while (!src.nilq1()) {
+	    LnList<T> node = src;      // take head node
+	    src = src.tl1();
+	    node.unlink();             // node becomes a 1-node chain
 
-	    int cmp = node.hd1().compareTo(pivot);
-	    if (cmp < 0) {
+	    int c = node.hd1().compareTo(pivot);
+	    if (c < 0) {
 		if (lessH.nilq1()) { lessH = lessT = node; }
 		else { lessT.link(node); lessT = node; }
-	    } else if (cmp == 0) {
+	    } else if (c == 0) {
 		if (eqH.nilq1()) { eqH = eqT = node; }
 		else { eqT.link(node); eqT = node; }
 	    } else {
@@ -68,32 +68,22 @@ public class Quiz01_05 {
 	return new Part<>(lessH, eqH, gtH);
     }
 
-    // concatenate a->b->c by tail relinking only
+    // concatenate a -> b -> c by relinking tails only (no new nodes)
     private static <T> LnList<T> concat3(LnList<T> a, LnList<T> b, LnList<T> c) {
-	LnList<T> head = LnListSUtil.nil(), tail = LnListSUtil.nil();
-
-	// append chain x to result
-	head = appendChain(head, tail, a);
-	if (!head.nilq1()) tail = lastNode(head);
-	
-	head = appendChain(head, tail, b);
-	if (!head.nilq1()) tail = lastNode(head);
-	
-	head = appendChain(head, tail, c);
-	return head;
-    }
-    
-    private static <T> LnList<T> appendChain(LnList<T> head, LnList<T> tail, LnList<T> x) {
-	if (x.nilq1()) return head;
-	if (head.nilq1()) { 
-	    return x; 
-	} else { 
-	    tail.link(x); 
-	    return head; 
+	if (!a.nilq1()) {
+	    LnList<T> tail = last(a);
+	    if (!b.nilq1()) { tail.link(b); tail = last(b); }
+	    if (!c.nilq1()) { tail.link(c); }
+	    return a;
 	}
+	if (!b.nilq1()) {
+	    if (!c.nilq1()) last(b).link(c);
+	    return b;
+	}
+	return c; // maybe empty
     }
 
-    private static <T> LnList<T> lastNode(LnList<T> h) {
+    private static <T> LnList<T> last(LnList<T> h) {
 	LnList<T> t = h;
 	while (!t.tl1().nilq1()) t = t.tl1();
 	return t;
