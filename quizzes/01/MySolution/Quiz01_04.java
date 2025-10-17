@@ -19,13 +19,13 @@ public class Quiz01_04 {
 	// sorted = first node (detach its tail)
 	LnList<T> sorted = head;
 	LnList<T> unsorted = head.tl1();
-	sorted.link(LnListSUtil.nil());     // make sorted a 1-node chain
+	sorted.link(new LnList<T>());     // make sorted a 1-node chain
 
 	// take nodes from unsorted and splice into sorted at the first position with hd > x  (strict > to keep stability)
 	while (!unsorted.nilq1()) {
 	    LnList<T> node = unsorted;      // detach node from unsorted
 	    unsorted = unsorted.tl1();
-	    node.unlink();                   // node now stands alone
+	    node.link(new LnList<T>());      // node now stands alone
 
 	    if (node.hd1().compareTo(sorted.hd1()) < 0) {
 		// insert at head of sorted
