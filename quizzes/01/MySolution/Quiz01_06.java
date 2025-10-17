@@ -3,8 +3,6 @@
 //
 import Library.FnList.*;
 import java.util.function.ToIntBiFunction;
-import java.util.ArrayList;
-import java.util.List;
 
 abstract public class Quiz01_06 {
     public static<T>

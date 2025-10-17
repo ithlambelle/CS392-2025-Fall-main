@@ -17,14 +17,14 @@ public class Quiz01_05 {
 	    return xs; // empty list is already sorted
 	}
 	
-	// Since we cannot create new nodes and must only rearrange existing ones,
-	// and the LnList class doesn't provide direct access to node manipulation,
-	// we'll implement a simpler approach that works within the constraints
+	// We need to rearrange existing nodes without creating new ones
+	// This is a complex operation that requires careful manipulation
+	// of the existing nodes using only public methods
 	
-	// Convert to array, sort, then create new list
-	// This is not ideal but works within the given constraints
+	// For quicksort, we need to partition the list around a pivot
+	// and recursively sort the partitions
 	
-	// Count elements
+	// Choose random pivot
 	int count = 0;
 	LnList<T> temp = xs;
 	while (!temp.nilq1()) {
@@ -32,69 +32,61 @@ public class Quiz01_05 {
 	    temp = temp.tl1();
 	}
 	
-	// Create array
-	@SuppressWarnings("unchecked")
-	T[] arr = (T[]) java.lang.reflect.Array.newInstance(xs.hd1().getClass(), count);
-	temp = xs;
-	for (int i = 0; i < count; i++) {
-	    arr[i] = temp.hd1();
-	    temp = temp.tl1();
+	int pivotIndex = (int)(Math.random() * count);
+	LnList<T> pivot = xs;
+	for (int i = 0; i < pivotIndex; i++) {
+	    pivot = pivot.tl1();
 	}
 	
-	// Sort array using quicksort with random pivot
-	quickSortArray(arr, 0, count - 1);
+	T pivotValue = pivot.hd1();
 	
-	// Create new list from sorted array
-	LnList<T> result = new LnList<T>();
-	for (int i = count - 1; i >= 0; i--) {
-	    result = new LnList<T>(arr[i], result);
-	}
+	// Partition the list around the pivot
+	LnList<T> left = new LnList<T>();
+	LnList<T> right = new LnList<T>();
+	LnList<T> current = xs;
 	
-	return result;
-    }
-    
-    // Helper method to perform quicksort on array with random pivot
-    private static <T extends Comparable<T>>
-    void quickSortArray(T[] arr, int low, int high) {
-	if (low < high) {
-	    // Choose random pivot
-	    int pivotIndex = low + (int)(Math.random() * (high - low + 1));
+	while (!current.nilq1()) {
+	    T value = current.hd1();
+	    LnList<T> next = current.tl1();
 	    
-	    // Partition the array
-	    int pivotPos = partition(arr, low, high, pivotIndex);
-	    
-	    // Recursively sort elements before and after partition
-	    quickSortArray(arr, low, pivotPos - 1);
-	    quickSortArray(arr, pivotPos + 1, high);
-	}
-    }
-    
-    // Helper method to partition array around pivot
-    private static <T extends Comparable<T>>
-    int partition(T[] arr, int low, int high, int pivotIndex) {
-	// Move pivot to end
-	T pivot = arr[pivotIndex];
-	arr[pivotIndex] = arr[high];
-	arr[high] = pivot;
-	
-	int i = low - 1;
-	
-	for (int j = low; j < high; j++) {
-	    if (arr[j].compareTo(pivot) <= 0) {
-		i++;
-		// Swap arr[i] and arr[j]
-		T temp = arr[i];
-		arr[i] = arr[j];
-		arr[j] = temp;
+	    if (value.compareTo(pivotValue) < 0) {
+		// Add to left partition
+		if (left.nilq1()) {
+		    left = current;
+		} else {
+		    left.append1(current);
+		}
+	    } else if (value.compareTo(pivotValue) > 0) {
+		// Add to right partition
+		if (right.nilq1()) {
+		    right = current;
+		} else {
+		    right.append1(current);
+		}
 	    }
+	    
+	    current = next;
 	}
 	
-	// Move pivot to its correct position
-	T temp = arr[i + 1];
-	arr[i + 1] = arr[high];
-	arr[high] = temp;
+	// Recursively sort partitions
+	LnList<T> sortedLeft = LnListQuickSort(left);
+	LnList<T> sortedRight = LnListQuickSort(right);
 	
-	return i + 1;
+	// Combine results
+	if (sortedLeft.nilq1()) {
+	    if (sortedRight.nilq1()) {
+		return pivot;
+	    } else {
+		pivot.link(sortedRight);
+		return pivot;
+	    }
+	} else {
+	    sortedLeft.append1(pivot);
+	    if (!sortedRight.nilq1()) {
+		pivot.link(sortedRight);
+	    }
+	    return sortedLeft;
+	}
     }
     
     public static void main (String[] args) {

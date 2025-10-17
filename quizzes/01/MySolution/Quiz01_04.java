@@ -18,48 +18,57 @@ public class Quiz01_04 {
 	    return xs; // empty list is already sorted
 	}
 	
-	// Since we cannot create new nodes and must only rearrange existing ones,
-	// and the LnList class doesn't provide direct access to node manipulation,
-	// we'll implement a simpler approach that works within the constraints
+	// We need to rearrange existing nodes without creating new ones
+	// This is a complex operation that requires careful manipulation
+	// of the existing nodes using only public methods
 	
-	// Convert to array, sort, then create new list
-	// This is not ideal but works within the given constraints
+	// Start with the first element as the sorted portion
+	LnList<T> sorted = xs;
+	LnList<T> current = xs.tl1();
 	
-	// Count elements
-	int count = 0;
-	LnList<T> temp = xs;
-	while (!temp.nilq1()) {
-	    count++;
-	    temp = temp.tl1();
-	}
-	
-	// Create array
-	@SuppressWarnings("unchecked")
-	T[] arr = (T[]) java.lang.reflect.Array.newInstance(xs.hd1().getClass(), count);
-	temp = xs;
-	for (int i = 0; i < count; i++) {
-	    arr[i] = temp.hd1();
-	    temp = temp.tl1();
-	}
-	
-	// Sort array using insertion sort
-	for (int i = 1; i < count; i++) {
-	    T key = arr[i];
-	    int j = i - 1;
-	    while (j >= 0 && arr[j].compareTo(key) > 0) {
-		arr[j + 1] = arr[j];
-		j--;
+	// Process each remaining element
+	while (!current.nilq1()) {
+	    T currentValue = current.hd1();
+	    LnList<T> next = current.tl1();
+	    
+	    // Find the correct position in the sorted portion
+	    LnList<T> prev = null;
+	    LnList<T> temp = sorted;
+	    
+	    while (!temp.nilq1() && temp.hd1().compareTo(currentValue) <= 0) {
+		prev = temp;
+		temp = temp.tl1();
 	    }
-	    arr[j + 1] = key;
+	    
+	    // Remove current node from its current position
+	    if (prev == null) {
+		// Current is already at the beginning, no need to move
+		sorted = current;
+	    } else {
+		// Unlink current from its current position
+		prev.unlink();
+		// Link current to the next element
+		current.link(next);
+		
+		// Insert current at the correct position
+		if (temp.nilq1()) {
+		    // Insert at the end
+		    prev.link(current);
+		} else {
+		    // Insert in the middle
+		    current.link(temp);
+		    if (prev.nilq1()) {
+			sorted = current;
+		    } else {
+			prev.link(current);
+		    }
+		}
+	    }
+	    
+	    current = next;
 	}
 	
-	// Create new list from sorted array
-	LnList<T> result = new LnList<T>();
-	for (int i = count - 1; i >= 0; i--) {
-	    result = new LnList<T>(arr[i], result);
-	}
-	
-	return result;
+	return sorted;
     }
     
     public static void main (String[] args) {
