@@ -98,6 +98,16 @@ public class Quiz01_02 {
 	result1.foritm(printConsumer);
 	System.out.println();
 	
+	// Test with empty consumer
+	System.out.println("\nTesting with empty consumer:");
+	Consumer<Consumer<Character>> emptyFfcs = (Consumer<Character> fcs) -> {
+	    // Do nothing - empty consumer
+	};
+	FnList<Character> emptyResult = thirdOrderFun(emptyFfcs);
+	System.out.print("Empty consumer result: ");
+	emptyResult.System$out$print();
+	System.out.println();
+	
 	return /*void*/;
     }
 }
