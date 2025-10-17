@@ -19,11 +19,8 @@ public class Quiz01_03 {
 	// HX: Yes, you can use functions (but not recursive functions)
 	// HX: Please do not try to write a HUGH if-then-else mumble jumble!
 	
-	// NOTE: Ref<T> is a simple mutable reference wrapper class needed to simulate
-	// in-place sorting without using arrays, lists, recursion, or loops as required.
-	// This is a minimal utility class (not an external library) that allows us to
-	// swap values between variables using only functions and if-then-else statements.
-	// The professor's own solution uses this exact same approach.
+	// ref<t> is a simple mutable wrapper needed for sorting without arrays/lists/loops
+	// this allows swapping values using only functions and if-then-else statements
 	final class Ref<U> { U v; Ref(U v){ this.v = v; } }
 	Ref<T> r0=new Ref<>(x0), r1=new Ref<>(x1), r2=new Ref<>(x2), r3=new Ref<>(x3), r4=new Ref<>(x4),
 	       r5=new Ref<>(x5), r6=new Ref<>(x6), r7=new Ref<>(x7), r8=new Ref<>(x8), r9=new Ref<>(x9);
