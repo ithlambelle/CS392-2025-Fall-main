@@ -6,7 +6,7 @@ import Library.LnList.*;
 public class Quiz01_04 {
     public static
 	<T extends Comparable<T>>
-	LnList<T> LnListInsertSort(LnList<T> xs) {
+	LnList<T> LnListInsertSort(LnList<T> head) {
 	// HX-2025-10-12:
 	// Please implement (stable) insert sort on a
 	// linked list (LnList).
@@ -14,18 +14,38 @@ public class Quiz01_04 {
 	// of the LnList class. You can only use the public methods
 	// provided by the LnList class
 	
-	if (xs.nilq1() || xs.tl1().nilq1()) return xs;
+	if (head.nilq1() || head.tl1().nilq1()) return head;
 
-	return insertSorted(LnListInsertSort(xs.tl1()), xs.hd1());
-    }
-    
-    private static <T extends Comparable<T>> LnList<T> insertSorted(LnList<T> sorted, T x) {
-	if (sorted.nilq1() || x.compareTo(sorted.hd1()) < 0) {
-	    return new LnList<T>(x, sorted);
-	} else {
-	    // preserve stability (equal keys stay before the new x)
-	    return new LnList<T>(sorted.hd1(), insertSorted(sorted.tl1(), x));
+	// 'sorted' is the head of the sorted prefix we build
+	LnList<T> sorted = head;                 // first node is trivially sorted
+	LnList<T> unsorted = head.tl1();
+	sorted.unlink();                         // detach sorted prefix to a single-node list
+
+	while (!unsorted.nilq1()) {
+	    // take 'node' from unsorted
+	    LnList<T> node = unsorted;
+	    unsorted = unsorted.tl1();
+	    node.unlink();                       // detach node
+
+	    // insert 'node' into 'sorted' at the first position where hd > node.hd (stable: only >, not >=)
+	    if (node.hd1().compareTo(sorted.hd1()) < 0) {
+		// insert at head
+		node.link(sorted);
+		sorted = node;
+	    } else {
+		LnList<T> prev = sorted;
+		LnList<T> cur  = sorted.tl1();
+		while (!cur.nilq1() && cur.hd1().compareTo(node.hd1()) <= 0) {
+		    prev = cur;
+		    cur  = cur.tl1();
+		}
+		// splice node between prev and cur
+		prev.unlink(); // unlink cur from prev
+		prev.link(node);
+		node.link(cur);
+	    }
 	}
+	return sorted;
     }
     
     public static void main (String[] args) {

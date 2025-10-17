@@ -6,61 +6,97 @@ import Library.LnList.*;
 public class Quiz01_05 {
     public static
 	<T extends Comparable<T>>
-	LnList<T> LnListQuickSort(LnList<T> xs) {
+	LnList<T> LnListQuickSort(LnList<T> head) {
 	// HX-2025-10-12:
 	// Please implement quicksort on a linked list (LnList).
 	// Note that you are not allowed to modify the definition
 	// of the LnList class. You can only use the public methods
 	// provided by the LnList class
 	
-	if (xs.nilq1() || xs.tl1().nilq1()) return xs;
-	
-	// Choose random pivot
-	int count = 0;
-	LnList<T> temp = xs;
-	while (!temp.nilq1()) {
-	    count++;
-	    temp = temp.tl1();
-	}
-	
-	int pivotIndex = (int)(Math.random() * count);
-	LnList<T> pivot = xs;
-	for (int i = 0; i < pivotIndex; i++) {
-	    pivot = pivot.tl1();
-	}
-	
-	T pivotValue = pivot.hd1();
-	
-	// Partition the list around the pivot
-	LnList<T> left = partition(xs, pivotValue, true);  // < pivot
-	LnList<T> right = partition(xs, pivotValue, false); // > pivot
-	
-	// Recursively sort partitions
-	left = LnListQuickSort(left);
-	right = LnListQuickSort(right);
-	
-	// Combine results: left + pivot + right
-	return concat(left, new LnList<T>(pivotValue, right));
+	if (head.nilq1() || head.tl1().nilq1()) return head;
+
+	int n = 0;
+	for (LnList<T> t = head; !t.nilq1(); t = t.tl1()) n++;
+	int pivotIdx = (int)(Math.random() * n);    // random in [0, n)
+
+	// fetch pivot value without new nodes
+	LnList<T> t = head;
+	for (int i = 0; i < pivotIdx; i++) t = t.tl1();
+	T pivot = t.hd1();
+
+	// partition by relinking nodes
+	Part<T> p = partitionDetach(head, pivot);
+
+	// recurse on less and greater
+	LnList<T> lessSorted = LnListQuickSort(p.less);
+	LnList<T> greatSorted = LnListQuickSort(p.greater);
+
+	// stitch: lessSorted -> equal -> greatSorted
+	return concat3(lessSorted, p.equal, greatSorted);
     }
     
-    private static <T extends Comparable<T>> LnList<T> partition(LnList<T> xs, T pivot, boolean lessThan) {
-	if (xs.nilq1()) return new LnList<T>();
-	
-	T head = xs.hd1();
-	LnList<T> tail = xs.tl1();
-	
-	boolean shouldInclude = lessThan ? head.compareTo(pivot) < 0 : head.compareTo(pivot) > 0;
-	
-	if (shouldInclude) {
-	    return new LnList<T>(head, partition(tail, pivot, lessThan));
-	} else {
-	    return partition(tail, pivot, lessThan);
+    // container for partition results
+    private static final class Part<U> {
+	LnList<U> less, equal, greater;
+	Part(LnList<U> l, LnList<U> e, LnList<U> g){ less=l; equal=e; greater=g; }
+    }
+
+    // detach every node from 'head' and prepend into less/equal/greater chains.
+    // uses only tl getters/setters; no new node allocations.
+    private static <T extends Comparable<T>> Part<T> partitionDetach(LnList<T> head, T pivot) {
+	LnList<T> lessH = LnListSUtil.nil(), lessT = LnListSUtil.nil();
+	LnList<T> eqH   = LnListSUtil.nil(), eqT   = LnListSUtil.nil();
+	LnList<T> gtH   = LnListSUtil.nil(), gtT   = LnListSUtil.nil();
+
+	while (!head.nilq1()) {
+	    LnList<T> node = head;
+	    head = head.tl1();
+	    node.unlink(); // detach
+
+	    int cmp = node.hd1().compareTo(pivot);
+	    if (cmp < 0) {
+		if (lessH.nilq1()) { lessH = lessT = node; }
+		else { lessT.link(node); lessT = node; }
+	    } else if (cmp == 0) {
+		if (eqH.nilq1()) { eqH = eqT = node; }
+		else { eqT.link(node); eqT = node; }
+	    } else {
+		if (gtH.nilq1()) { gtH = gtT = node; }
+		else { gtT.link(node); gtT = node; }
+	    }
 	}
+	return new Part<>(lessH, eqH, gtH);
+    }
+
+    // concatenate a->b->c by tail relinking only
+    private static <T> LnList<T> concat3(LnList<T> a, LnList<T> b, LnList<T> c) {
+	LnList<T> head = LnListSUtil.nil(), tail = LnListSUtil.nil();
+
+	// append chain x to result
+	head = appendChain(head, tail, a);
+	if (!head.nilq1()) tail = lastNode(head);
+	
+	head = appendChain(head, tail, b);
+	if (!head.nilq1()) tail = lastNode(head);
+	
+	head = appendChain(head, tail, c);
+	return head;
     }
     
-    private static <T extends Comparable<T>> LnList<T> concat(LnList<T> a, LnList<T> b) {
-	if (a.nilq1()) return b;
-	return new LnList<T>(a.hd1(), concat(a.tl1(), b));
+    private static <T> LnList<T> appendChain(LnList<T> head, LnList<T> tail, LnList<T> x) {
+	if (x.nilq1()) return head;
+	if (head.nilq1()) { 
+	    return x; 
+	} else { 
+	    tail.link(x); 
+	    return head; 
+	}
+    }
+
+    private static <T> LnList<T> lastNode(LnList<T> h) {
+	LnList<T> t = h;
+	while (!t.tl1().nilq1()) t = t.tl1();
+	return t;
     }
     
     public static void main (String[] args) {
