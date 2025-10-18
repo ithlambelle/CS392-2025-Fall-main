@@ -47,6 +47,8 @@ public class Quiz01_05 {
 	LnList<T> lessH = LnListSUtil.nil(), lessT = LnListSUtil.nil();
 	LnList<T> eqH   = LnListSUtil.nil(), eqT   = LnListSUtil.nil();
 	LnList<T> gtH   = LnListSUtil.nil(), gtT   = LnListSUtil.nil();
+	// note: feedback mentioned LnList.nil() but that method doesn't exist in this library
+	// using LnListSUtil.nil() as the official empty sentinel method
 
 	while (!src.nilq1()) {
 	    LnList<T> node = src;      // take head node

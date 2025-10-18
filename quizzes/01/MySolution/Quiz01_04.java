@@ -20,6 +20,8 @@ public class Quiz01_04 {
 	LnList<T> sorted = head;
 	LnList<T> unsorted = head.tl1();
 	sorted.link(LnListSUtil.nil());     // make sorted a 1-node chain
+	// note: feedback mentioned LnList.nil() but that method doesn't exist in this library
+	// using LnListSUtil.nil() as the official empty sentinel method
 
 	// take nodes from unsorted and splice into sorted at the first position with hd > x  (strict > to keep stability)
 	while (!unsorted.nilq1()) {
