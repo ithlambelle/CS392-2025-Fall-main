@@ -44,11 +44,10 @@ public class Quiz01_05 {
 
     // detach every node from src and append to one of {less, equal, greater} by relinking tails.
     private static <T extends Comparable<T>> Part<T> partitionDetach(LnList<T> src, T pivot) {
-	LnList<T> lessH = LnListSUtil.nil(), lessT = LnListSUtil.nil();
-	LnList<T> eqH   = LnListSUtil.nil(), eqT   = LnListSUtil.nil();
-	LnList<T> gtH   = LnListSUtil.nil(), gtT   = LnListSUtil.nil();
-	// note: feedback mentioned LnList.nil() but that method doesn't exist in this library
-	// using LnListSUtil.nil() as the official empty sentinel method
+	LnList<T> lessH = null, lessT = null;
+	LnList<T> eqH   = null, eqT   = null;
+	LnList<T> gtH   = null, gtT   = null;
+	// using null instead of LnListSUtil.nil() to avoid constructors
 
 	while (!src.nilq1()) {
 	    LnList<T> node = src;      // take head node
@@ -57,13 +56,13 @@ public class Quiz01_05 {
 
 	    int c = node.hd1().compareTo(pivot);
 	    if (c < 0) {
-		if (lessH.nilq1()) { lessH = lessT = node; }
+		if (lessH == null) { lessH = lessT = node; }
 		else { lessT.link(node); lessT = node; }
 	    } else if (c == 0) {
-		if (eqH.nilq1()) { eqH = eqT = node; }
+		if (eqH == null) { eqH = eqT = node; }
 		else { eqT.link(node); eqT = node; }
 	    } else {
-		if (gtH.nilq1()) { gtH = gtT = node; }
+		if (gtH == null) { gtH = gtT = node; }
 		else { gtT.link(node); gtT = node; }
 	    }
 	}
@@ -72,17 +71,17 @@ public class Quiz01_05 {
 
     // concatenate a -> b -> c by relinking tails only (no new nodes)
     private static <T> LnList<T> concat3(LnList<T> a, LnList<T> b, LnList<T> c) {
-	if (!a.nilq1()) {
+	if (a != null) {
 	    LnList<T> tail = last(a);
-	    if (!b.nilq1()) { tail.link(b); tail = last(b); }
-	    if (!c.nilq1()) { tail.link(c); }
+	    if (b != null) { tail.link(b); tail = last(b); }
+	    if (c != null) { tail.link(c); }
 	    return a;
 	}
-	if (!b.nilq1()) {
-	    if (!c.nilq1()) last(b).link(c);
+	if (b != null) {
+	    if (c != null) last(b).link(c);
 	    return b;
 	}
-	return c; // maybe empty
+	return c; // maybe null
     }
 
     private static <T> LnList<T> last(LnList<T> h) {
