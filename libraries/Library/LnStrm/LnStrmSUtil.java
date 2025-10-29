@@ -48,9 +48,9 @@ class LnStrmSUtil {
 	      if (cxs.nilq()) {
 		  return new LnStcn<R>();
 	      } else {
-		  final T head = cxs.head;
-		  final LnStrm<T> tail = cxs.tail;
-		  return new LnStcn<R>(fopr.apply(head), map0(tail, fopr));
+		  final T hd = cxs.head;
+		  final LnStrm<T> tl = cxs.tail;
+		  return new LnStcn<R>(fopr.apply(hd), map0(tl, fopr));
 	      }
 	  }
        );
