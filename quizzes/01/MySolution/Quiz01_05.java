@@ -13,7 +13,7 @@ public class Quiz01_05 {
 	// of the LnList class. You can only use the public methods
 	// provided by the LnList class
 	
-	if (head.nilq1() || head.tl1().nilq1()) return head;
+	if (head == null || head.nilq1() || head.tl1().nilq1()) return head;
 
 	// count nodes to choose a random pivot index in [0, n)
 	int n = 0;
@@ -71,14 +71,14 @@ public class Quiz01_05 {
 
     // concatenate a -> b -> c by relinking tails only (no new nodes)
     private static <T> LnList<T> concat3(LnList<T> a, LnList<T> b, LnList<T> c) {
-	if (a != null) {
+	if (a != null && !a.nilq1()) {
 	    LnList<T> tail = last(a);
-	    if (b != null) { tail.link(b); tail = last(b); }
-	    if (c != null) { tail.link(c); }
+	    if (b != null && !b.nilq1()) { tail.link(b); tail = last(b); }
+	    if (c != null && !c.nilq1()) { tail.link(c); }
 	    return a;
 	}
-	if (b != null) {
-	    if (c != null) last(b).link(c);
+	if (b != null && !b.nilq1()) {
+	    if (c != null && !c.nilq1()) last(b).link(c);
 	    return b;
 	}
 	return c; // maybe null
