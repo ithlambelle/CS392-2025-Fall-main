@@ -2,6 +2,7 @@
 // HX: 50 points
 //
 import Library.FnList.*;
+import Library.FnTuple.*;
 import java.util.function.ToIntBiFunction;
 
 abstract public class Quiz01_06 {
@@ -21,11 +22,44 @@ abstract public class Quiz01_06 {
 	// Please implement a stable sorting method based on
 	// someSort, which may not be stable
 	
-	// To make an unstable sort stable, we can use a stable sort
-	// or modify the comparison function to include the original index
+	// To make an unstable sort stable, we modify the comparison function
+	// to include the original index as a tiebreaker
 	
-	// Approach: Use merge sort which is stable
-	return xs.U0.mergeSort(xs, cmp);
+	// Create a list of pairs (element, original_index)
+	FnList<FnTupl2<T, Integer>> indexedList = addIndices(xs, 0);
+	
+	// Define a comparison function that uses original comparison first,
+	// then falls back to original index for stability
+	ToIntBiFunction<FnTupl2<T, Integer>, FnTupl2<T, Integer>> stableCmp = (a, b) -> {
+	    int result = cmp.applyAsInt(a.fst(), b.fst());
+	    if (result != 0) return result;
+	    // If elements are equal, use original index to maintain stability
+	    return a.snd().compareTo(b.snd());
+	};
+	
+	// Sort using someSort with the stable comparison function
+	FnList<FnTupl2<T, Integer>> sortedIndexed = someSort(indexedList, stableCmp);
+	
+	// Extract the sorted elements (discard indices)
+	return extractElements(sortedIndexed);
+    }
+    
+    // Helper method to add indices to elements
+    private static <T> FnList<FnTupl2<T, Integer>> addIndices(FnList<T> xs, int index) {
+	if (xs.nilq()) return FnListSUtil.nil();
+	return FnListSUtil.cons(
+	    new FnTupl2<>(xs.hd(), index),
+	    addIndices(xs.tl(), index + 1)
+	);
+    }
+    
+    // Helper method to extract elements from indexed pairs
+    private static <T> FnList<T> extractElements(FnList<FnTupl2<T, Integer>> indexedList) {
+	if (indexedList.nilq()) return FnListSUtil.nil();
+	return FnListSUtil.cons(
+	    indexedList.hd().fst(),
+	    extractElements(indexedList.tl())
+	);
     }
     
     public static void main(String[] args) {
