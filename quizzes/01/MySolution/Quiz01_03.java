@@ -30,21 +30,58 @@ public class Quiz01_03 {
 	};
 
 	// 9 bubble passes, fully unrolled (no arrays/lists/loops)
-	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
-	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
-	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
-	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
-	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
-	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
-	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
-	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
-	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+	bubblePass1(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, cs);
+	bubblePass2(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, cs);
+	bubblePass3(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, cs);
+	bubblePass4(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, cs);
+	bubblePass5(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, cs);
+	bubblePass6(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, cs);
+	bubblePass7(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, cs);
+	bubblePass8(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, cs);
+	bubblePass9(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, cs);
 
 	@SuppressWarnings("unchecked")
 	T[] out = (T[]) java.lang.reflect.Array.newInstance(r0.v.getClass(), 10);
 	out[0] = r0.v; out[1] = r1.v; out[2] = r2.v; out[3] = r3.v; out[4] = r4.v;
 	out[5] = r5.v; out[6] = r6.v; out[7] = r7.v; out[8] = r8.v; out[9] = r9.v;
 	return out;
+    }
+    
+    // Private methods for each bubble pass
+    private static <T> void bubblePass1(Ref<T> r0, Ref<T> r1, Ref<T> r2, Ref<T> r3, Ref<T> r4, Ref<T> r5, Ref<T> r6, Ref<T> r7, Ref<T> r8, Ref<T> r9, java.util.function.BiConsumer<Ref<T>,Ref<T>> cs) {
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+    }
+    
+    private static <T> void bubblePass2(Ref<T> r0, Ref<T> r1, Ref<T> r2, Ref<T> r3, Ref<T> r4, Ref<T> r5, Ref<T> r6, Ref<T> r7, Ref<T> r8, Ref<T> r9, java.util.function.BiConsumer<Ref<T>,Ref<T>> cs) {
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+    }
+    
+    private static <T> void bubblePass3(Ref<T> r0, Ref<T> r1, Ref<T> r2, Ref<T> r3, Ref<T> r4, Ref<T> r5, Ref<T> r6, Ref<T> r7, Ref<T> r8, Ref<T> r9, java.util.function.BiConsumer<Ref<T>,Ref<T>> cs) {
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+    }
+    
+    private static <T> void bubblePass4(Ref<T> r0, Ref<T> r1, Ref<T> r2, Ref<T> r3, Ref<T> r4, Ref<T> r5, Ref<T> r6, Ref<T> r7, Ref<T> r8, Ref<T> r9, java.util.function.BiConsumer<Ref<T>,Ref<T>> cs) {
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+    }
+    
+    private static <T> void bubblePass5(Ref<T> r0, Ref<T> r1, Ref<T> r2, Ref<T> r3, Ref<T> r4, Ref<T> r5, Ref<T> r6, Ref<T> r7, Ref<T> r8, Ref<T> r9, java.util.function.BiConsumer<Ref<T>,Ref<T>> cs) {
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+    }
+    
+    private static <T> void bubblePass6(Ref<T> r0, Ref<T> r1, Ref<T> r2, Ref<T> r3, Ref<T> r4, Ref<T> r5, Ref<T> r6, Ref<T> r7, Ref<T> r8, Ref<T> r9, java.util.function.BiConsumer<Ref<T>,Ref<T>> cs) {
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+    }
+    
+    private static <T> void bubblePass7(Ref<T> r0, Ref<T> r1, Ref<T> r2, Ref<T> r3, Ref<T> r4, Ref<T> r5, Ref<T> r6, Ref<T> r7, Ref<T> r8, Ref<T> r9, java.util.function.BiConsumer<Ref<T>,Ref<T>> cs) {
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+    }
+    
+    private static <T> void bubblePass8(Ref<T> r0, Ref<T> r1, Ref<T> r2, Ref<T> r3, Ref<T> r4, Ref<T> r5, Ref<T> r6, Ref<T> r7, Ref<T> r8, Ref<T> r9, java.util.function.BiConsumer<Ref<T>,Ref<T>> cs) {
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
+    }
+    
+    private static <T> void bubblePass9(Ref<T> r0, Ref<T> r1, Ref<T> r2, Ref<T> r3, Ref<T> r4, Ref<T> r5, Ref<T> r6, Ref<T> r7, Ref<T> r8, Ref<T> r9, java.util.function.BiConsumer<Ref<T>,Ref<T>> cs) {
+	cs.accept(r0,r1); cs.accept(r1,r2); cs.accept(r2,r3); cs.accept(r3,r4); cs.accept(r4,r5); cs.accept(r5,r6); cs.accept(r6,r7); cs.accept(r7,r8); cs.accept(r8,r9);
     }
     
     public static void main(String[] args) {
