@@ -1,8 +1,11 @@
 //
+package Library.LnStrm;
+//
+//
 // HX-2025-10-23:
 // typedef LStrm<T> = Supplier<LStcn<T>>
 //
-class LnStcn<T> {
+public class LnStcn<T> {
     public final T head;
     public final LnStrm<T> tail;
 

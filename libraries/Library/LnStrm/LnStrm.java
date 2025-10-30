@@ -1,4 +1,6 @@
 //
+package Library.LnStrm;
+//
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.function.Predicate;
@@ -6,7 +8,7 @@ import java.util.function.Predicate;
 // HX-2025-10-23:
 // typedef LnStrm<T> = Supplier<LnStcn<T>>
 //
-class LnStrm<T> {
+public class LnStrm<T> {
     private
     // final
     Supplier<LnStcn<T>> value = null;
