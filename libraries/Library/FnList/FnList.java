@@ -1,11 +1,23 @@
+package Library.FnList;
+
+import Library.FnA1sz.*;
+import Library.LnStrm.*;
+
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
+import java.util.function.ToIntBiFunction;
 
 public class FnList<T> {
-    Node root;
-    
+//
+    private Node root;
+//    
+    public final
+    FnListSUtil SU = new FnListSUtil();
+    public final
+    FnListUtil<T> U0 = new FnListUtil<T>();
+//
     private class Node {
 	T head;
 	FnList<T> tail;
@@ -13,7 +25,7 @@ public class FnList<T> {
 	    head = x0; tail = xs;
 	}
     }
-
+//
     public FnList() {
 	root = null;
     }
@@ -29,9 +41,11 @@ public class FnList<T> {
     }
 
     public T hd() {
+	// = hd$raw
 	return root.head;
     }
     public FnList<T> tl() {
+	// = tl$raw
 	return root.tail;
     }
 //
@@ -45,12 +59,21 @@ public class FnList<T> {
 	return res;
     }
 //
+    public
+    FnA1sz<T> toArray() {
+	return new FnA1sz(this);
+    }
+    public
+    LnStrm<T> toLnStrm() {
+	return SU.strmize(this);
+    }
+//
     public FnList<T> reverse() {
-	return FnListUtil.reverse(this);
+	return FnListSUtil.reverse(this);
     }
     public FnList<T>
 	rappend(FnList<T> ys) {
-	return FnListUtil.rappend(this, ys);
+	return FnListSUtil.rappend(this, ys);
     }
 //
     public void System$out$print() {
@@ -68,42 +91,47 @@ public class FnList<T> {
 	System.out.print(")");
     }
 //
-    void foritm(Consumer<? super T> action) {
+    public void
+	foritm(Consumer<? super T> work) {
 	FnList<T> xs = this;
 	while (true) {
 	    if (xs.nilq()) break;
-	    action.accept(xs.hd());
+	    work.accept(xs.hd());
 	    xs = xs.tl();
 	}
     }
-    void rforitm(Consumer<? super T> action) {
+    public void
+	rforitm(Consumer<? super T> work) {
 	FnList<T> xs = this.reverse();
 	while (true) {
 	    if (xs.nilq()) break;
-	    action.accept(xs.hd());
+	    work.accept(xs.hd());
 	    xs = xs.tl();
 	}
     }
-    void iforitm(BiConsumer<Integer, ? super T> action) {
+    public void
+	iforitm(BiConsumer<Integer, ? super T> work) {
 	int i0 = 0;
 	FnList<T> xs = this;
 	while (true) {
 	    if (xs.nilq()) break;
-	    action.accept(i0, xs.hd());
+	    work.accept(i0, xs.hd());
 	    i0 += 1; xs = xs.tl();
 	}
     }
-    void irforitm(BiConsumer<Integer, ? super T> action) {
+    public void
+	irforitm(BiConsumer<Integer, ? super T> work) {
 	int i0 = 0;
 	FnList<T> xs = this.reverse();
 	while (true) {
 	    if (xs.nilq()) break;
-	    action.accept(i0, xs.hd());
+	    work.accept(i0, xs.hd());
 	    i0 += 1; xs = xs.tl();
 	}
     }
 //
-    boolean forall(Predicate<? super T> pred) {
+    public boolean
+	forall(Predicate<? super T> pred) {
 	FnList<T> xs = this;
 	while (true) {
 	    if (xs.nilq()) break;
@@ -112,7 +140,8 @@ public class FnList<T> {
 	}
 	return true;
     }
-    boolean rforall(Predicate<? super T> pred) {
+    public boolean
+	rforall(Predicate<? super T> pred) {
 	FnList<T> xs = this.reverse();
 	while (true) {
 	    if (xs.nilq()) break;
@@ -121,7 +150,8 @@ public class FnList<T> {
 	}
 	return true;
     }
-    boolean iforall(BiPredicate<Integer, ? super T> pred) {
+    public boolean
+	iforall(BiPredicate<Integer, ? super T> pred) {
 	int i0 = 0;
 	FnList<T> xs = this;
 	while (true) {
@@ -131,7 +161,8 @@ public class FnList<T> {
 	}
 	return true;
     }
-    boolean irforall(BiPredicate<Integer, ? super T> pred) {
+    public boolean
+	irforall(BiPredicate<Integer, ? super T> pred) {
 	int i0 = 0;
 	FnList<T> xs = this.reverse();
 	while (true) {
@@ -141,4 +172,14 @@ public class FnList<T> {
 	}
 	return true;
     }
+//
+    public FnList<T>
+	mergeSort(ToIntBiFunction<T,T> cmp) { return this.U0.mergeSort(this, cmp); }
+//
+    public FnList<T>
+	quickSort(ToIntBiFunction<T,T> cmp) { return this.U0.quickSort(this, cmp); }
+//
+    public FnList<T>
+	insertSort(ToIntBiFunction<T,T> cmp) { return this.U0.insertSort(this, cmp); }
+//
 } // end of [public class FnList<T>{...}]

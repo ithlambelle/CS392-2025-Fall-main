@@ -13,74 +13,76 @@ public class Assign06_01 {
     public static<T>
 	LnStrm<T> mergeLnStrm(LnStrm<LnStrm<T>> fxss, ToIntBiFunction<T,T> cmpr) {
 	// merge multiple ordered streams into one ordered stream
-	// the streams are already ordered, and the first elements of each stream are also ordered
+	// Compare first stream with second stream, then recurse
 	
 	return new LnStrm<T>(
 	    () -> {
-		// evaluate the stream of streams
+		// evaluate the stream of streams once
 		LnStcn<LnStrm<T>> cxs = fxss.eval0();
 		if (cxs.nilq()) {
 		    // no streams to merge
 		    return new LnStcn<T>();
 		}
 		
-		// get the first stream and evaluate it
-		LnStrm<T> firstStream = cxs.head;
-		LnStrm<LnStrm<T>> remainingStreams = cxs.tail;
+		// Get first stream
+		final LnStrm<T> firstStream = cxs.head;
+		final LnStrm<LnStrm<T>> remainingStreams = cxs.tail;
 		
+		// Evaluate first stream
 		LnStcn<T> firstCn = firstStream.eval0();
 		if (firstCn.nilq()) {
-		    // first stream is empty, skip it and recurse
+		    // first stream is empty, merge remaining streams
 		    return mergeLnStrm(remainingStreams, cmpr).eval0();
 		}
 		
-		// get the first element from the first stream
 		final T firstHead = firstCn.head;
 		final LnStrm<T> firstTail = firstCn.tail;
 		
-		// check if there are more streams to consider
+		// Check if there are more streams
 		LnStcn<LnStrm<T>> nextCn = remainingStreams.eval0();
 		if (nextCn.nilq()) {
-		    // no more streams, just return the first element and continue with first stream
-		    return new LnStcn<T>(firstHead, mergeLnStrm(
-			new LnStrm<LnStrm<T>>(() -> new LnStcn<LnStrm<T>>(firstTail, remainingStreams)),
-			cmpr
-		    ));
+		    // only one stream, return its head
+		    return new LnStcn<T>(firstHead, firstTail);
 		}
 		
-		// there are more streams, compare first elements
-		LnStrm<T> nextStream = nextCn.head;
-		LnStrm<LnStrm<T>> restStreams = nextCn.tail;
+		// Compare with next stream
+		final LnStrm<T> nextStream = nextCn.head;
+		final LnStrm<LnStrm<T>> restStreams = nextCn.tail;
 		
-		// evaluate next stream to get its first element
-		LnStcn<T> nextStreamCn = nextStream.eval0();
-		if (nextStreamCn.nilq()) {
-		    // next stream is empty, skip it and recurse
+		LnStcn<T> nextCn2 = nextStream.eval0();
+		if (nextCn2.nilq()) {
+		    // next stream is empty, skip it and continue
 		    return mergeLnStrm(
-			new LnStrm<LnStrm<T>>(() -> new LnStcn<LnStrm<T>>(firstStream, restStreams)),
+			new LnStrm<LnStrm<T>>(() -> new LnStcn<LnStrm<T>>(
+			    new LnStrm<T>(() -> new LnStcn<T>(firstHead, firstTail)),
+			    restStreams
+			)),
 			cmpr
 		    ).eval0();
 		}
 		
-		final T nextHead = nextStreamCn.head;
-		final LnStrm<T> nextTail = nextStreamCn.tail;
+		final T nextHead = nextCn2.head;
+		final LnStrm<T> nextTail = nextCn2.tail;
 		
-		// compare first elements
+		// Compare and return the smaller one
 		int cmp = cmpr.applyAsInt(firstHead, nextHead);
 		if (cmp <= 0) {
-		    // firstHead <= nextHead, so firstHead is the smallest
+		    // firstHead is smaller or equal
 		    return new LnStcn<T>(firstHead, mergeLnStrm(
 			new LnStrm<LnStrm<T>>(() -> new LnStcn<LnStrm<T>>(
 			    firstTail,
-			    new LnStrm<LnStrm<T>>(() -> new LnStcn<LnStrm<T>>(nextStream, restStreams))
+			    new LnStrm<LnStrm<T>>(() -> new LnStcn<LnStrm<T>>(
+				new LnStrm<T>(() -> new LnStcn<T>(nextHead, nextTail)),
+				restStreams
+			    ))
 			)),
 			cmpr
 		    ));
 		} else {
-		    // nextHead < firstHead, so nextHead is the smallest
+		    // nextHead is smaller
 		    return new LnStcn<T>(nextHead, mergeLnStrm(
 			new LnStrm<LnStrm<T>>(() -> new LnStcn<LnStrm<T>>(
-			    firstStream,
+			    new LnStrm<T>(() -> new LnStcn<T>(firstHead, firstTail)),
 			    new LnStrm<LnStrm<T>>(() -> new LnStcn<LnStrm<T>>(nextTail, restStreams))
 			)),
 			cmpr

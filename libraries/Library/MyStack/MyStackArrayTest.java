@@ -1,6 +1,9 @@
+import Library.MyStack.*;
+
 public class MyStackArrayTest {
     public static void main(String[] args) {
-	MyStack<Integer> itms = new MyStackArray(10);
+	MyStackArray<Integer> itms =
+	    new MyStackArray<Integer>(10);
 	itms.push$exn(1);
 	itms.push$exn(2);
 	itms.push$exn(3);
@@ -8,5 +11,16 @@ public class MyStackArrayTest {
 	itms.push$exn(4);
 	itms.push$exn(5);
 	itms.System$out$print(); System.out.println();
+    	System.out.print("MyStackRev(");
+	itms.irforitm
+	(
+          (i, itm) ->
+	  {
+	      if (i > 0) {
+		  System.out.print(",");
+	      }
+	      System.out.print(itm.toString());
+	  }
+	); System.out.print(")"); System.out.println();
     }
 }

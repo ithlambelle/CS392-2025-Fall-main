@@ -1,6 +1,8 @@
+import Library.MyQueue.*;
+
 public class MyQueueListTest {
     public static void main(String[] args) {
-	MyQueue<Integer> itms = new MyQueueList();
+	MyQueueList<Integer> itms = new MyQueueList();
 	itms.enque$exn(1);
 	itms.enque$exn(2);
 	itms.enque$exn(3);
@@ -8,5 +10,16 @@ public class MyQueueListTest {
 	itms.enque$exn(4);
 	itms.enque$exn(5);
 	itms.System$out$print(); System.out.println();
+    	System.out.print("MyQueueRev(");
+	itms.irforitm
+	(
+          (i, itm) ->
+	  {
+	      if (i > 0) {
+		  System.out.print(",");
+	      }
+	      System.out.print(itm.toString());
+	  }
+	); System.out.print(")"); System.out.println();
     }
 }
