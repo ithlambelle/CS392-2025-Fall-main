@@ -35,9 +35,19 @@ public class MyDequeList<T> extends MyDequeBase<T> {
     public boolean isFull() { return false; }
 
     // @Override
-    public T fpeek$raw() { return frnt.item; }
+    public T fpeek$raw() {
+	if (frnt == null) {
+	    throw new MyDequeEmptyExn();
+	}
+	return frnt.item;
+    }
     // @Override
-    public T rpeek$raw() { return rear.item; }
+    public T rpeek$raw() {
+	if (rear == null) {
+	    throw new MyDequeEmptyExn();
+	}
+	return rear.item;
+    }
 //
     public T fdeque$raw()
     {
