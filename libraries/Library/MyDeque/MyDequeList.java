@@ -41,20 +41,64 @@ public class MyDequeList<T> extends MyDequeBase<T> {
 //
     public T fdeque$raw()
     {
-	throw new NotImplementedExn(); }
+	if (frnt == null) {
+	    throw new MyDequeEmptyExn();
+	}
+	T itm = frnt.item;
+	frnt = frnt.next;
+	if (frnt == null) {
+	    rear = null;
+	} else {
+	    frnt.prev = null;
+	}
+	nitm -= 1;
+	return itm;
+    }
     // @Override
     public T rdeque$raw()
     {
-	throw new NotImplementedExn(); }
+	if (rear == null) {
+	    throw new MyDequeEmptyExn();
+	}
+	T itm = rear.item;
+	rear = rear.prev;
+	if (rear == null) {
+	    frnt = null;
+	} else {
+	    rear.next = null;
+	}
+	nitm -= 1;
+	return itm;
+    }
 //
     // @Override
     public void fenque$raw(T itm)
     {
-	throw new NotImplementedExn(); }
+	Node newNode = new Node(itm, null, frnt);
+	if (frnt == null) {
+	    frnt = newNode;
+	    rear = newNode;
+	} else {
+	    frnt.prev = newNode;
+	    frnt = newNode;
+	}
+	nitm += 1;
+	return;
+    }
     // @Override
     public void renque$raw(T itm)
     {
-	throw new NotImplementedExn(); }
+	Node newNode = new Node(itm, rear, null);
+	if (rear == null) {
+	    frnt = newNode;
+	    rear = newNode;
+	} else {
+	    rear.next = newNode;
+	    rear = newNode;
+	}
+	nitm += 1;
+	return;
+    }
     // @Override
 //
     public void foritm(Consumer<? super T> work) {
