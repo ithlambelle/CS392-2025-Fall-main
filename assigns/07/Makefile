@@ -1,31 +1,36 @@
 # Makefile for Assignment 7
 
-# Set classpath to include Library
-LIBRARY = ../../libraries/Library
-CLASSPATH = $(LIBRARY):MySolution
+Library=../../libraries/Library
 
 # Compile Library dependencies first
 lib:
-	cd $(LIBRARY)/MyDeque && javac -cp $(LIBRARY) *.java
-	cd $(LIBRARY)/FnList && javac -cp $(LIBRARY) *.java
-	cd $(LIBRARY)/LnStrm && javac -cp $(LIBRARY) *.java
-	cd $(LIBRARY)/FnGtree && javac -cp $(LIBRARY) *.java
+	cd $(Library) && make compall
+
+# Compile MyDeque (needed for Assign07_01)
+mydeque:
+	cd $(Library)/MyRefer && javac -cp $(Library) *.java
+	cd $(Library)/MyDeque && javac -cp $(Library) *.java
 
 # Compile assignment files
-Assign07_01: lib
-	javac -cp $(CLASSPATH) MySolution/Assign07_01.java
+Assign07_01: mydeque
+	cd $(Library)/FnList && javac -cp $(Library) *.java
+	cd $(Library)/LnStrm && javac -cp $(Library) *.java
+	cd $(Library)/FnGtree && javac -cp $(Library) *.java
+	javac -cp MySolution:$(Library) MySolution/Assign07_01.java
 
-Assign07_02: lib Assign07_01
-	javac -cp $(CLASSPATH) MySolution/Assign07_02.java
+Assign07_02: Assign07_01
+	javac -cp MySolution:$(Library) MySolution/Assign07_02.java
 
 # Run tests
 test: Assign07_02
-	java -cp $(CLASSPATH) Assign07_02
+	java -cp MySolution:$(Library) Assign07_02
 
 # Clean compiled files
 clean:
 	rm -f MySolution/*.class
-	find $(LIBRARY) -name "*.class" -delete
 
-.PHONY: lib Assign07_01 Assign07_02 test clean
+cleanall: clean
+	cd $(Library) && make cleanall
+
+.PHONY: lib mydeque Assign07_01 Assign07_02 test clean cleanall
 
