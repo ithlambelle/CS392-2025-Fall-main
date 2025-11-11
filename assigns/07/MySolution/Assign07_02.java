@@ -22,6 +22,12 @@ class TermInt extends Term {
 	this.tag = "TermInt"; this.val = val;
     }
     public double eval() { return val; }
+    public boolean equals(Object obj) {
+	if (obj instanceof TermInt) {
+	    return this.val == ((TermInt)obj).val;
+	}
+	return false;
+    }
 }
 
 class TermOpr extends Term {
@@ -81,15 +87,17 @@ class GameState implements FnGtree<Term> {
 		Term t2 = rest2.hd();
 		
 		// Get remaining terms (all except t1 and t2)
+		// Since t1 comes before t2 in the list, we can build remaining more efficiently
 		FnList<Term> remaining = FnListSUtil.nil();
 		FnList<Term> temp = terms;
-		boolean found1 = false, found2 = false;
+		boolean skip1 = false, skip2 = false;
 		while (!temp.nilq()) {
 		    Term current = temp.hd();
-		    if (current == t1 && !found1) {
-			found1 = true;
-		    } else if (current == t2 && !found2) {
-			found2 = true;
+		    // Skip first occurrence of t1 and t2
+		    if (!skip1 && current == t1) {
+			skip1 = true;
+		    } else if (!skip2 && current == t2) {
+			skip2 = true;
 		    } else {
 			remaining = FnListSUtil.cons(current, remaining);
 		    }
