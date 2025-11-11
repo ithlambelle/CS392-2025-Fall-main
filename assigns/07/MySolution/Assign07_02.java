@@ -162,15 +162,66 @@ public class Assign07_02 {
 	LnStrm<Term> allTerms = Assign07_01.BFirstEnumerate(root);
 	
 	// Filter for terms that evaluate to 24
-	return allTerms.filter0((Term t) -> {
-	    if (t == null) return false;
-	    try {
-		double val = t.eval();
-		return Math.abs(val - 24.0) < 1e-10;
-	    } catch (Exception e) {
-		return false;
+	// Note: value() returns null for non-leaf nodes, so we need to skip them
+	// filter0 stops at null values (consq() returns false), so we need custom filtering
+	return new LnStrm<Term>(
+	    () -> {
+		LnStcn<Term> cxs = allTerms.eval0();
+		while (cxs != null) {
+		    if (cxs.consq()) {
+			// Non-null head
+			Term hd = cxs.head;
+			LnStrm<Term> tl = cxs.tail;
+			try {
+			    double val = hd.eval();
+			    if (Math.abs(val - 24.0) < 1e-10) {
+				return new LnStcn<Term>(hd, GameOf24_bfs_solve_filter_helper(tl));
+			    }
+			} catch (Exception e) {
+			    // Skip this term
+			}
+			cxs = tl.eval0();
+		    } else {
+			// Null head (non-leaf node), continue to tail
+			if (cxs.tail != null) {
+			    cxs = cxs.tail.eval0();
+			} else {
+			    break;
+			}
+		    }
+		}
+		return new LnStcn<Term>(); // no solutions found
 	    }
-	});
+	);
+    }
+    private static LnStrm<Term> GameOf24_bfs_solve_filter_helper(LnStrm<Term> tl) {
+	return new LnStrm<Term>(
+	    () -> {
+		LnStcn<Term> cxs = tl.eval0();
+		while (cxs != null) {
+		    if (cxs.consq()) {
+			Term hd = cxs.head;
+			LnStrm<Term> nextTl = cxs.tail;
+			try {
+			    double val = hd.eval();
+			    if (Math.abs(val - 24.0) < 1e-10) {
+				return new LnStcn<Term>(hd, GameOf24_bfs_solve_filter_helper(nextTl));
+			    }
+			} catch (Exception e) {
+			    // Skip
+			}
+			cxs = nextTl.eval0();
+		    } else {
+			if (cxs.tail != null) {
+			    cxs = cxs.tail.eval0();
+			} else {
+			    break;
+			}
+		    }
+		}
+		return new LnStcn<Term>();
+	    }
+	);
     }
 
     public LnStrm<Term> GameOf24_dfs_solve
@@ -193,15 +244,65 @@ public class Assign07_02 {
 	LnStrm<Term> allTerms = Assign07_01.DFirstEnumerate(root);
 	
 	// Filter for terms that evaluate to 24
-	return allTerms.filter0((Term t) -> {
-	    if (t == null) return false;
-	    try {
-		double val = t.eval();
-		return Math.abs(val - 24.0) < 1e-10;
-	    } catch (Exception e) {
-		return false;
+	// Note: value() returns null for non-leaf nodes, so we need to skip them
+	return new LnStrm<Term>(
+	    () -> {
+		LnStcn<Term> cxs = allTerms.eval0();
+		while (cxs != null) {
+		    if (cxs.consq()) {
+			// Non-null head
+			Term hd = cxs.head;
+			LnStrm<Term> tl = cxs.tail;
+			try {
+			    double val = hd.eval();
+			    if (Math.abs(val - 24.0) < 1e-10) {
+				return new LnStcn<Term>(hd, GameOf24_dfs_solve_filter_helper(tl));
+			    }
+			} catch (Exception e) {
+			    // Skip this term
+			}
+			cxs = tl.eval0();
+		    } else {
+			// Null head (non-leaf node), continue to tail
+			if (cxs.tail != null) {
+			    cxs = cxs.tail.eval0();
+			} else {
+			    break;
+			}
+		    }
+		}
+		return new LnStcn<Term>(); // no solutions found
 	    }
-	});
+	);
+    }
+    private static LnStrm<Term> GameOf24_dfs_solve_filter_helper(LnStrm<Term> tl) {
+	return new LnStrm<Term>(
+	    () -> {
+		LnStcn<Term> cxs = tl.eval0();
+		while (cxs != null) {
+		    if (cxs.consq()) {
+			Term hd = cxs.head;
+			LnStrm<Term> nextTl = cxs.tail;
+			try {
+			    double val = hd.eval();
+			    if (Math.abs(val - 24.0) < 1e-10) {
+				return new LnStcn<Term>(hd, GameOf24_dfs_solve_filter_helper(nextTl));
+			    }
+			} catch (Exception e) {
+			    // Skip
+			}
+			cxs = nextTl.eval0();
+		    } else {
+			if (cxs.tail != null) {
+			    cxs = cxs.tail.eval0();
+			} else {
+			    break;
+			}
+		    }
+		}
+		return new LnStcn<Term>();
+	    }
+	);
     }
 //
     // Please add minimal testing code for GameOf24_bfs_solve
@@ -216,7 +317,8 @@ public class Assign07_02 {
 	LnStcn<Term> bfsStcn = bfsSolutions.eval0();
 	while (!bfsStcn.nilq()) {
 	    Term sol = bfsStcn.head;
-	    System.out.println("Solution " + (++bfsCount) + ": " + sol.eval());
+	    bfsCount++;
+	    System.out.println("Solution " + bfsCount + ": evaluates to " + sol.eval());
 	    bfsStcn = bfsStcn.tail.eval0();
 	}
 	System.out.println("Found " + bfsCount + " BFS solutions");
@@ -227,7 +329,8 @@ public class Assign07_02 {
 	LnStcn<Term> dfsStcn = dfsSolutions.eval0();
 	while (!dfsStcn.nilq()) {
 	    Term sol = dfsStcn.head;
-	    System.out.println("Solution " + (++dfsCount) + ": " + sol.eval());
+	    dfsCount++;
+	    System.out.println("Solution " + dfsCount + ": evaluates to " + sol.eval());
 	    dfsStcn = dfsStcn.tail.eval0();
 	}
 	System.out.println("Found " + dfsCount + " DFS solutions");

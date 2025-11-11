@@ -16,12 +16,23 @@ public class Assign07_01 {
 	// Please detail what changes are made
 	MyDequeList<FnGtree<T>>
 	    deque = new MyDequeList<FnGtree<T>>();
-	deque.renque$exn(root); return BFirstEnumerate_helper(deque);
+	try {
+	    deque.renque$exn(root);
+	} catch (Exception e) {
+	    throw new RuntimeException("Failed to add root to deque", e);
+	}
+	return BFirstEnumerate_helper(deque);
     }
     private static<T> LnStrm<T>
 	BFirstEnumerate_helper(MyDequeList<FnGtree<T>> deque) {
 	return new LnStrm<T>(
 	  () -> {
+	      // The deque should not be empty on first call since we added root
+	      // Debug: check deque state when lambda is evaluated
+	      // int dequeSize = deque.size();
+	      // boolean dequeEmpty = deque.isEmpty();
+	      // System.out.println("DEBUG: Lambda evaluated, deque size=" + dequeSize + ", empty=" + dequeEmpty);
+	      
 	      if (deque.isEmpty()) {
 		  return new LnStcn<T>();
 	      } else {
