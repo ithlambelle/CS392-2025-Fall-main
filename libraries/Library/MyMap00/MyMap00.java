@@ -6,12 +6,12 @@ import Library.FnTuple.*;
 
 import java.util.function.BiConsumer;
 
-interface MyMap00<K,V> {
+public interface MyMap00<K,V> {
 //
-    int size();
+    int size(); // the number of keys
 //
-    boolean isFull(); // checks for fullness
-    boolean isEmpty(); // checks for emptiness
+    boolean isFull(); // checks for fullness // no room
+    boolean isEmpty(); // checks for emptiness // no keys
 //
     LnStrm<FnTupl2<K,FnList<V>>> strmize();
 //
@@ -24,5 +24,6 @@ interface MyMap00<K,V> {
     boolean insert$opt(K key, V val); // HX: return false if no insertion is done
 //
     void foritm(BiConsumer<? super K, ? super V> work);
+    // If a key mapped to multiple values, each key-value pair needs to be processed
 //
 } // end of [interface MyMap00<T>{...}]
