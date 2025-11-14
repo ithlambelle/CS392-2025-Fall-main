@@ -13,6 +13,14 @@ public class LnStrm<T> {
     // final
     Supplier<LnStcn<T>> value = null;
 
+    public LnStrm() {
+	this.value = (
+          () -> new LnStcn<T>());
+    }
+    public LnStrm(T x0) {
+	this.value = (
+          () -> new LnStcn<T>(x0));
+    }
     public LnStrm(Supplier<LnStcn<T>> fxs) {
 	this.value = fxs;
     }

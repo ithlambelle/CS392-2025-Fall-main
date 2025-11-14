@@ -54,4 +54,19 @@ public class FnTree<T> {
        );
     }
 //
+    public LnStrm<T> postorder$enumerate() {
+	return new LnStrm<T>(
+	  () -> {
+	      if (root==null) {
+		  return new LnStcn<T>();
+	      } else {
+		  return LnStrmSUtil.eval0(
+		    LnStrmSUtil.append0(
+		      root.lchild.postorder$enumerate(),
+                      LnStrmSUtil.append0(root.rchild.postorder$enumerate(), new LnStrm<T>(root.item))));
+	      }
+	  }
+       );
+    }
+//
 } // end of [public class FnTree<T>{...}]
