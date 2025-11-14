@@ -1,6 +1,8 @@
 package Library.FnTree;
 
+import Library.FnList.*;
 import Library.LnStrm.*;
+import Library.FnGtree.*;
 
 public class FnTree<T> {
 //
@@ -20,8 +22,31 @@ public class FnTree<T> {
     public FnTree() {
 	root = null;
     }
-    public FnTree(T x0, FnTree<T> lxs, FnTree<T> rxs) {
+    public FnTree
+	(T x0, FnTree<T> lxs, FnTree<T> rxs) {
 	root = new Node(x0, lxs, rxs);
+    }
+//
+    public boolean nilq() {
+	return (root == null);
+    }
+    public boolean consq() {
+	return (root != null);
+    }
+    public FnTree<T> lchild() { return root.lchild; }
+    public FnTree<T> rchild() { return root.lchild; }
+//
+    public FnGtree<T> toFnGtree() {
+	return new FnGtree<T>() {
+	    public T value() {
+		return root.item;
+	    }
+	    public FnList<FnGtree<T>> children() {
+		return FnListSUtil.cons(
+		  root.lchild.toFnGtree(),
+		  FnListSUtil.sing(root.rchild.toFnGtree()));
+	    }
+	};
     }
 //
     public LnStrm<T> inorder$enumerate() {
