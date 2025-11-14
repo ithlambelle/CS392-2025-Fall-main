@@ -24,6 +24,11 @@ public class LnStrm<T> {
 	this.value = null; return fstcn.get();
     }
 
+    public LnStrm<T>
+	append0(LnStrm<T> fys) {
+	return LnStrmSUtil.append0(this, fys);
+    }
+
     public void
 	foritm0(Consumer<? super T> work) {
 	LnStrmSUtil.foritm0(this, work); return;

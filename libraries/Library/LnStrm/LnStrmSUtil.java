@@ -20,6 +20,26 @@ public class LnStrmSUtil {
     }
 //
     public static<T>
+	LnStrm<T> cons0(T x0, LnStrm<T> fxs) {
+	return new LnStrm<T>(() -> new LnStcn<T>(x0, fxs));
+    }
+//
+    public static<T>
+	LnStrm<T> append0
+	(LnStrm<T> fxs, LnStrm<T> fys) {
+	return new LnStrm<T>(
+	  () -> {
+	      final LnStcn<T> cxs = fxs.eval0();
+	      if (cxs.nilq()) {
+		  return fys.eval0();
+	      } else {
+		  return new LnStcn<T>(cxs.head, append0(cxs.tail, fys));
+	      }
+	  }
+       );
+    }
+//
+    public static<T>
 	void foritm0
 	(LnStrm<T> fxs, Consumer<? super T> work) {
 	LnStcn<T> cxs = fxs.eval0();
