@@ -6,6 +6,12 @@ import Library.FnTuple.*;
 
 import java.util.function.BiConsumer;
 
+/*
+HX-2025-11-15:
+A map consists of DISTINCT keys, and each key is
+map to a list of values, where the list obeys LIFO.
+*/
+
 public interface MyMap00<K,V> {
 //
     int size(); // the number of keys
