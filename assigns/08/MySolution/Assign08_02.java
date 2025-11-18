@@ -114,8 +114,9 @@ public class Assign08_02<V>
     // insert$raw: insert key-value pair, assume it works
     public void insert$raw(String key, V val) {
 	int baseHash = hash(key);
+	int firstNullIdx = -1; // remember first null slot encountered
 	
-	// first, check if key already exists
+	// single pass: check if key exists, remember first null slot
 	for (int i = 0; i < capacity; i++) {
 	    int idx = probe(baseHash, i);
 	    FnTupl2<String, FnList<V>> slot = table[idx];
@@ -124,23 +125,18 @@ public class Assign08_02<V>
 		slot.sub1 = new FnList<V>(val, slot.sub1);
 		return;
 	    }
-	    if (slot == null) {
-		break; // found empty slot, will insert here
+	    if (slot == null && firstNullIdx == -1) {
+		firstNullIdx = idx; // remember first null slot
 	    }
 	}
 	
-	// key doesn't exist, find empty slot to insert
-	for (int i = 0; i < capacity; i++) {
-	    int idx = probe(baseHash, i);
-	    if (table[idx] == null) {
-		// found empty slot
-		FnList<V> vals = new FnList<V>(val, new FnList<V>());
-		table[idx] = new FnTupl2<String, FnList<V>>(key, vals);
-		keyCount++;
-		return;
-	    }
+	// key doesn't exist, insert at first null slot found
+	if (firstNullIdx != -1) {
+	    FnList<V> vals = new FnList<V>(val, new FnList<V>());
+	    table[firstNullIdx] = new FnTupl2<String, FnList<V>>(key, vals);
+	    keyCount++;
 	}
-	// should not reach here if insertion is assumed to work
+	// should not reach here if insertion is assumed to work and table not full
     }
     
     // insert$exn: insert key-value pair, throw exception if full
