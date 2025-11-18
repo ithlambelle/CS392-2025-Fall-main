@@ -35,80 +35,26 @@ public class MyDequeList<T> extends MyDequeBase<T> {
     public boolean isFull() { return false; }
 
     // @Override
-    public T fpeek$raw() {
-	if (frnt == null) {
-	    throw new MyDequeEmptyExn();
-	}
-	return frnt.item;
-    }
+    public T fpeek$raw() { return frnt.item; }
     // @Override
-    public T rpeek$raw() {
-	if (rear == null) {
-	    throw new MyDequeEmptyExn();
-	}
-	return rear.item;
-    }
+    public T rpeek$raw() { return rear.item; }
 //
     public T fdeque$raw()
     {
-	if (frnt == null) {
-	    throw new MyDequeEmptyExn();
-	}
-	T itm = frnt.item;
-	frnt = frnt.next;
-	if (frnt == null) {
-	    rear = null;
-	} else {
-	    frnt.prev = null;
-	}
-	nitm -= 1;
-	return itm;
-    }
+	throw new NotImplementedExn(); }
     // @Override
     public T rdeque$raw()
     {
-	if (rear == null) {
-	    throw new MyDequeEmptyExn();
-	}
-	T itm = rear.item;
-	rear = rear.prev;
-	if (rear == null) {
-	    frnt = null;
-	} else {
-	    rear.next = null;
-	}
-	nitm -= 1;
-	return itm;
-    }
+	throw new NotImplementedExn(); }
 //
     // @Override
     public void fenque$raw(T itm)
     {
-	Node newNode = new Node(itm, null, frnt);
-	if (frnt == null) {
-	    frnt = newNode;
-	    rear = newNode;
-	} else {
-	    frnt.prev = newNode;
-	    frnt = newNode;
-	}
-	nitm += 1;
-	return;
-    }
+	throw new NotImplementedExn(); }
     // @Override
     public void renque$raw(T itm)
     {
-	Node newNode = new Node(itm, rear, null);
-	if (rear == null) {
-	    frnt = newNode;
-	    rear = newNode;
-	} else {
-	    rear.next = newNode;
-	    rear = newNode;
-	}
-	nitm += 1;
-	return;
-    }
+	throw new NotImplementedExn(); }
     // @Override
 //
     public void foritm(Consumer<? super T> work) {

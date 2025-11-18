@@ -1,17 +1,26 @@
 /*
-  HX-2025-09-30: 15 points
+import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 */
-public class Assign04_01 {
-    //
-    // HX-2025-09-30:
-    // implement a method that uses foritm to find the sum
-    // of all even numbers in a functional list
-    //
-    public static int sumEvenNumbers(FnList<Integer> xs) {
-        // please implement using foritm
-    }
 
-    public static void main(String[] argv) {
-        // please write some testing code here
-    }
-}
+public class Assign04_01<T> extends MyQueueBase<T> {
+//
+    /*
+      HX-2025-09-24:
+      Please first copy your implementation of Assign03_03
+      to this class.
+     */
+
+    /*
+      The following four higher-order methods are declared
+      in MyQueueBase<T>:
+      
+      public void foritm(Consumer<? super T> action);
+      public void iforitm(BiConsumer<Integer, ? super T> action);
+      public rforitm(Consumer<? super T> action);
+      public irforitm(BiConsumer<Integer, ? super T> action);
+
+      Please implement them for your two list based queue.
+    */
+
+} // end of [public class Assign04_01<T> extends MyQueueBase<T>{...}]

@@ -2,22 +2,36 @@
 
 It is due Tuesday, the 30th of September, 2025
 
-## Assignment 4-1 (15 points)
+## Assignment 4-1 (20 points)
 
-Implement a method that uses higher-order methods to find the sum of all even numbers in a functional list. You must use the `foritm` method from FnList to iterate through the list and apply a predicate to filter even numbers.
+In Assign03_03, you are asked to implement a two list
+based queue. Please extend your implementation of Assign03_03
+with code implementing the following four higher-order methods:
+foritm, iforitm, rforall, irforall
 
-## Assignment 4-2 (15 points)
+## Assignment 4-2 (50 points)
 
-Implement a method that uses `iforitm` to find the index of the first occurrence of a given element in a functional list. If the element is not found, return -1.
+This is a comprehensive assignment. You are asked to implement
+MyDequeList, a list-based implementation of deque. Note that a
+deque is a double ended queue, which is a combination of stack
+and queue. In other words, a deque is both a stack and a queue.
+You have two sets of enqueue and dequeue operations:
 
-## Assignment 4-3 (20 points)
+```
+rpeek: for read peek // peek was called 'top'
+fpeek: for front peek // peek was called 'top'
+renque and rdeque: for rear enqueue and dequeue
+fenque and fdeque: for front enqueue and dequeue
+```
 
-Implement a method that uses `rforitm` (reverse foritm) to check if a functional list is a palindrome. A palindrome reads the same forwards and backwards.
+The underlying list for your implementation of MyDequeuList
+should be doubly-linked: each node has a 'next' field as well
+as a 'prev' field; node.next returns the following node (if it
+exists) and node.prev returns the preceding node (if it exists).
 
-## Assignment 4-4 (25 points)
+Please base your code structure on Library/MyQueue. Yes, you
+need to implement the four higher-order methods (foritm, iforitm,
+rforitm, and irforitm). Don't forget the System$out$print method.
 
-Implement a method that uses `irforitm` to find all elements in a functional list that are greater than their index position. Return a new functional list containing only these elements.
-
-## Assignment 4-5 (25 points)
-
-Implement a method that uses higher-order methods to implement a simple calculator that can evaluate expressions stored in a functional list. The expressions will be in postfix notation (Reverse Polish Notation) using a stack data structure from MyLibrary.
+Please put all of your MyDeque implementation inside the (already
+created) MySolution/MyDeque directory.
