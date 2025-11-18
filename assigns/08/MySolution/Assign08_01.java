@@ -242,49 +242,23 @@ public class Assign08_01<V>
     
     // strmize: create stream of all key-value list pairs
     public LnStrm<FnTupl2<String, FnList<V>>> strmize() {
-	return new LnStrm<FnTupl2<String, FnList<V>>>(
-	    () -> {
-		// find first non-empty bucket
-		for (int i = 0; i < capacity; i++) {
-		    if (!table[i].nilq1()) {
-			// create stream starting from this bucket
-			return new LnStcn<FnTupl2<String, FnList<V>>>(
-			    table[i].hd1(),
-			    strmizeFromBucket(i, table[i].tl1())
-			);
-		    }
-		}
-		// all buckets empty
-		return new LnStcn<FnTupl2<String, FnList<V>>>();
+	// collect all pairs into an fnlist, then convert to stream
+	FnList<FnTupl2<String, FnList<V>>> pairs = new FnList<FnTupl2<String, FnList<V>>>();
+	
+	// iterate through all buckets and collect pairs
+	for (int i = capacity - 1; i >= 0; i--) {
+	    LnList<FnTupl2<String, FnList<V>>> bucket = table[i];
+	    LnList<FnTupl2<String, FnList<V>>> curr = bucket;
+	    
+	    // collect pairs from this bucket (in reverse order to maintain insertion order)
+	    while (!curr.nilq1()) {
+		pairs = new FnList<FnTupl2<String, FnList<V>>>(curr.hd1(), pairs);
+		curr = curr.tl1();
 	    }
-	);
-    }
-    
-    // helper: create stream from a specific bucket and remaining buckets
-    private LnStrm<FnTupl2<String, FnList<V>>> strmizeFromBucket(int bucketIdx, LnList<FnTupl2<String, FnList<V>>> remaining) {
-	return new LnStrm<FnTupl2<String, FnList<V>>>(
-	    () -> {
-		if (!remaining.nilq1()) {
-		    // more elements in current bucket
-		    return new LnStcn<FnTupl2<String, FnList<V>>>(
-			remaining.hd1(),
-			strmizeFromBucket(bucketIdx, remaining.tl1())
-		    );
-		} else {
-		    // current bucket exhausted, move to next bucket
-		    for (int i = bucketIdx + 1; i < capacity; i++) {
-			if (!table[i].nilq1()) {
-			    return new LnStcn<FnTupl2<String, FnList<V>>>(
-				table[i].hd1(),
-				strmizeFromBucket(i, table[i].tl1())
-			    );
-			}
-		    }
-		    // no more buckets
-		    return new LnStcn<FnTupl2<String, FnList<V>>>();
-		}
-	    }
-	);
+	}
+	
+	// convert fnlist to stream
+	return pairs.toLnStrm();
     }
     
     // foritm: iterate through all key-value pairs
