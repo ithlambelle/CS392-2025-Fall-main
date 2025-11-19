@@ -133,21 +133,6 @@ public class Assign05_02 {
 	    }
 	    System.out.println();
 	}
-	
-	// Test with random 1M integers for comparison
-	System.out.println("\nTesting insertSort with 1,000,000 random integers...");
-	Random rand = new Random(42); // fixed seed for reproducibility
-	
-	FnList<Integer> random = new FnList<Integer>();
-	for (int i = 0; i < 1000000; i++) {
-	    random = new FnList<Integer>(rand.nextInt(), random);
-	}
-	
-	startTime = System.currentTimeMillis();
-	FnList<Integer> sortedRandom = insertSort(random);
-	endTime = System.currentTimeMillis();
-	
-	System.out.println("Random sorting completed in " + (endTime - startTime) + " ms");
     }
 
 } // end of [public class Assign05_02{...}]

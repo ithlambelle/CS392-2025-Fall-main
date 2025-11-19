@@ -21,56 +21,62 @@ public class Assign05_01 {
 	FnList<T>
 	mergeSort(FnList<T> xs, ToIntBiFunction<T,T> cmp) {
 	// HX-2025-10-08: Please implement this method
+	// Loop-based implementation to avoid stack overflow with large lists
+	
 	if (xs.nilq() || xs.tl().nilq()) {
 	    return xs; // base case: empty list or single element
 	}
 	
-	// Split the list into two halves
-	FnList<T>[] halves = splitList(xs);
-	FnList<T> left = halves[0];
-	FnList<T> right = halves[1];
-	
-	// Recursively sort both halves
-	FnList<T> sortedLeft = mergeSort(left, cmp);
-	FnList<T> sortedRight = mergeSort(right, cmp);
-	
-	// Merge the sorted halves
-	return merge(sortedLeft, sortedRight, cmp);
-    }
-    
-    // Helper method to split a list into two halves
-    private static<T> FnList<T>[] splitList(FnList<T> xs) {
-	@SuppressWarnings("unchecked")
-	FnList<T>[] result = new FnList[2];
-	
-	FnList<T> left = new FnList<T>();
-	FnList<T> right = new FnList<T>();
-	
-	boolean toLeft = true;
-	while (!xs.nilq()) {
-	    if (toLeft) {
-		left = new FnList<T>(xs.hd(), left);
-	    } else {
-		right = new FnList<T>(xs.hd(), right);
-	    }
-	    toLeft = !toLeft;
-	    xs = xs.tl();
+	// Convert to array for easier manipulation
+	java.util.List<T> list = new java.util.ArrayList<T>();
+	FnList<T> current = xs;
+	while (!current.nilq()) {
+	    list.add(current.hd());
+	    current = current.tl();
 	}
 	
-	result[0] = left.reverse();
-	result[1] = right.reverse();
+	// Perform bottom-up merge sort
+	int n = list.size();
+	java.util.List<T> aux = new java.util.ArrayList<T>(n);
+	for (int i = 0; i < n; i++) {
+	    aux.add(null);
+	}
+	
+	for (int sz = 1; sz < n; sz = sz + sz) {
+	    for (int lo = 0; lo < n - sz; lo += sz + sz) {
+		merge(list, aux, lo, lo + sz - 1, Math.min(lo + sz + sz - 1, n - 1), cmp);
+	    }
+	}
+	
+	// Convert back to FnList
+	FnList<T> result = new FnList<T>();
+	for (int i = n - 1; i >= 0; i--) {
+	    result = new FnList<T>(list.get(i), result);
+	}
+	
 	return result;
     }
     
-    // Helper method to merge two sorted lists
-    private static<T> FnList<T> merge(FnList<T> left, FnList<T> right, ToIntBiFunction<T,T> cmp) {
-	if (left.nilq()) return right;
-	if (right.nilq()) return left;
+    // Helper method to merge two sorted subarrays
+    private static<T> void merge(java.util.List<T> a, java.util.List<T> aux, 
+				 int lo, int mid, int hi, ToIntBiFunction<T,T> cmp) {
+	// Copy to aux array
+	for (int k = lo; k <= hi; k++) {
+	    aux.set(k, a.get(k));
+	}
 	
-	if (cmp.applyAsInt(left.hd(), right.hd()) <= 0) {
-	    return new FnList<T>(left.hd(), merge(left.tl(), right, cmp));
-	} else {
-	    return new FnList<T>(right.hd(), merge(left, right.tl(), cmp));
+	// Merge back to a[]
+	int i = lo, j = mid + 1;
+	for (int k = lo; k <= hi; k++) {
+	    if (i > mid) {
+		a.set(k, aux.get(j++));
+	    } else if (j > hi) {
+		a.set(k, aux.get(i++));
+	    } else if (cmp.applyAsInt(aux.get(j), aux.get(i)) < 0) {
+		a.set(k, aux.get(j++));
+	    } else {
+		a.set(k, aux.get(i++));
+	    }
 	}
     }
 

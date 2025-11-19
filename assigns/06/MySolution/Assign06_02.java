@@ -98,8 +98,8 @@ public class Assign06_02 {
 		    return new LnStcn<Integer>();
 		}
 		
-		FnTupl2<Integer,Integer> p1 = cn1.head;
-		LnStrm<FnTupl2<Integer,Integer>> tail1 = cn1.tail;
+			FnTupl2<Integer,Integer> p1 = cn1.hd();
+			LnStrm<FnTupl2<Integer,Integer>> tail1 = cn1.tl();
 		int sum1 = cubeSum(FnTupl2Helper.getSub0(p1), FnTupl2Helper.getSub1(p1));
 		
 		// Get second pair
@@ -108,20 +108,24 @@ public class Assign06_02 {
 		    return new LnStcn<Integer>();
 		}
 		
-		FnTupl2<Integer,Integer> p2 = cn2.head;
-		LnStrm<FnTupl2<Integer,Integer>> tail2 = cn2.tail;
+			FnTupl2<Integer,Integer> p2 = cn2.hd();
+			LnStrm<FnTupl2<Integer,Integer>> tail2 = cn2.tl();
 		int sum2 = cubeSum(FnTupl2Helper.getSub0(p2), FnTupl2Helper.getSub1(p2));
 		
 		if (sum1 == sum2) {
 		    // found a ramanujan number
+		    // skip both pairs and continue from tail2
 		    return new LnStcn<Integer>(
 			sum1,
-			// continue with remaining pairs, skipping the first pair
-			ramanujanNumbersFrom(tail1)
+			// continue with remaining pairs, skipping both p1 and p2
+			ramanujanNumbersFrom(tail2)
 		    );
 		} else {
 		    // not a match, continue from second pair
-		    return ramanujanNumbersFrom(tail1).eval0();
+		    // tail1 has been evaluated, so we need to create a new stream from cn2
+		    return ramanujanNumbersFrom(
+			new LnStrm<FnTupl2<Integer,Integer>>(() -> new LnStcn<FnTupl2<Integer,Integer>>(p2, tail2))
+		    ).eval0();
 		}
 	    }
 	);
@@ -133,9 +137,9 @@ public class Assign06_02 {
 	int count = 0;
 	LnStcn<T> cn = stream.eval0();
 	while (cn.consq() && count < limit) {
-	    System.out.println(cn.head);
+	    System.out.println(cn.hd());
 	    count++;
-	    cn = cn.tail.eval0();
+	    cn = cn.tl().eval0();
 	}
     }
     
@@ -148,11 +152,11 @@ public class Assign06_02 {
 	int count = 0;
 	LnStcn<FnTupl2<Integer,Integer>> cn = pairs.eval0();
 	while (cn.consq() && count < 20) {
-	    FnTupl2<Integer,Integer> p = cn.head;
+	    FnTupl2<Integer,Integer> p = cn.hd();
 	    int sum = cubeSum(FnTupl2Helper.getSub0(p), FnTupl2Helper.getSub1(p));
 	    System.out.println("(" + FnTupl2Helper.getSub0(p) + "," + FnTupl2Helper.getSub1(p) + ") -> " + sum);
 	    count++;
-	    cn = cn.tail.eval0();
+	    cn = cn.tl().eval0();
 	}
 	
 	// test ramanujan numbers - limit to first 3
@@ -169,9 +173,9 @@ public class Assign06_02 {
 	LnStcn<Integer> ramCn = ramanujan.eval0();
 	while (ramCn.consq() && ramCount < 3) {
 	    long elapsed = System.currentTimeMillis() - startTime;
-	    System.out.println("Found Ramanujan number #" + (ramCount + 1) + ": " + ramCn.head + " (took " + elapsed + " ms)");
+	    System.out.println("Found Ramanujan number #" + (ramCount + 1) + ": " + ramCn.hd() + " (took " + elapsed + " ms)");
 	    ramCount++;
-	    ramCn = ramCn.tail.eval0();
+	    ramCn = ramCn.tl().eval0();
 	}
 	
 	long totalTime = System.currentTimeMillis() - startTime;
@@ -180,4 +184,3 @@ public class Assign06_02 {
     }
 
 } // end of [public class Assign06_02{...}]
-
