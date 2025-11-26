@@ -1,0 +1,17 @@
+Quiz02_01: 3 (solved without testing)  
+Strategy: O(n^2) dynamic programming that tracks longest non-decreasing subsequences ending at each index, tie-breaking toward earlier indices to keep the result leftmost.
+
+Quiz02_02: 3 (solved without testing)  
+Strategy: iterative bottom-up merge sort (no recursion) with a scratch buffer, stable and O(n log n).
+
+Quiz02_03: 3 (solved without testing)  
+Strategy: model boards as `FnGtree` nodes that generate valid successor boards; filter DFS/BFS enumerations from `FnGtreeSUtil` to return solved puzzles.
+
+Quiz02_04: 3 (solved without testing)  
+Strategy: single-pass AVL check returning height/balance info; build 1M-node balanced BST via midpoint splits (height ≈ 20).
+
+Quiz02_05: 3 (solved without testing)  
+Strategy: validate red-black properties while carrying black-height; generate 1M-node balanced BST with alternating colors to minimize black height.
+
+Quiz02_06: 3 (solved without testing)  
+Strategy: iterative BST insert maintaining subtree sizes; reroot picks a random rank and rotates it to the top while keeping parent links.

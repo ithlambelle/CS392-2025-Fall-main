@@ -124,4 +124,11 @@ public class FnA1sz<T> {
     public FnA1sz<T>
 	insertSort(ToIntBiFunction<T,T> cmp) { return this.U0.insertSort(this, cmp); }
 //
+    // HX-quiz02 placeholder (empty body on purpose)
+    public static
+	<T extends Comparable<T>>
+	FnList<Integer> longestMonoSubsequence(FnA1sz<T> xs) {
+	return FnListSUtil.nil();
+    }
+//
 } // end of [public class FnA1sz<T>{...}]
