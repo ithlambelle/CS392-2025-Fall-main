@@ -21,7 +21,9 @@ public class Assign06_01 {
 	LnStrm<LnStrm<T>> preloadNext
 	  (LnStrm<LnStrm<T>> remaining, PriorityQueue<StreamNode<T>> pq) {
 	LnStcn<LnStrm<T>> outerCn = remaining.eval0();
-	if (outerCn.nilq()) return remaining;
+	if (outerCn.nilq()) {
+	    return new LnStrm<LnStrm<T>>(() -> new LnStcn<LnStrm<T>>());
+	}
 
 	LnStcn<T> innerCn = outerCn.hd().eval0();
 	LnStrm<LnStrm<T>> restOuter = outerCn.tl();

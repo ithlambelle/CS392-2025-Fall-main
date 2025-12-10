@@ -60,15 +60,19 @@ class GameState implements FnGtree<Term> {
 	this.terms = terms;
     }
     
-    public Term value() {
+	public Term value() {
 	// If we have one term, return it; otherwise return null (not a solution yet)
 	if (terms.length() == 1) {
 	    return terms.hd();
 	}
 	return null;
-    }
+	}
+
+	public int priority() {
+	    return terms.length();
+	}
     
-    public FnList<FnGtree<Term>> children() {
+	public FnList<FnGtree<Term>> children() {
 	// If we have 1 term, no children (leaf node)
 	if (terms.length() <= 1) {
 	    return FnListSUtil.nil();

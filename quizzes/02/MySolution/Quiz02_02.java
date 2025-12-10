@@ -24,16 +24,20 @@ public class Quiz02_02 {
 	T[] src = A;
 	T[] dest = buffer;
 
-	for (int width = 1; width < n; width <<= 1) {
-	    for (int i = 0; i < n; i += (width << 1)) {
+	int width = 1;
+	while (width < n) {
+	    int i = 0;
+	    while (i < n) {
 		int mid = Math.min(i + width, n);
 		int end = Math.min(i + (width << 1), n);
 		merge(src, dest, i, mid, end);
+		i += (width << 1);
 	    }
 	    // Swap roles of src/dest for next pass.
 	    T[] tmp = src;
 	    src = dest;
 	    dest = tmp;
+	    width <<= 1;
 	}
 
 	// If the final sorted data is in the buffer, copy it back.
@@ -47,7 +51,8 @@ public class Quiz02_02 {
 	void merge(T[] src, T[] dest, int start, int mid, int end) {
 	int i = start;
 	int j = mid;
-	for (int k = start; k < end; k++) {
+	int k = start;
+	while (k < end) {
 	    if (i < mid && (j >= end || src[i].compareTo(src[j]) <= 0)) {
 		dest[k] = src[i];
 		i += 1;
@@ -55,6 +60,7 @@ public class Quiz02_02 {
 		dest[k] = src[j];
 		j += 1;
 	    }
+	    k += 1;
 	}
     }
     public static void main (String[] args) {

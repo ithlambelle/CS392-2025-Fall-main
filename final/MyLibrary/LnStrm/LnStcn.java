@@ -1,0 +1,36 @@
+public class LnStcn<T> {
+    private Node root;
+
+    private class Node {
+	T head;
+	LnStrm<T> tail;
+    }
+
+    public LnStcn() {
+	root = null;
+    }
+    public LnStcn(T hd) {
+	root = new Node();
+	root.head = hd;
+	root.tail = new LnStrm<T>();
+    }
+    public LnStcn(T hd, LnStrm<T> tl) {
+	root = new Node();
+	root.head = hd;
+	root.tail = tl;
+    }
+
+    public boolean nilq() {
+	return (root == null);
+    }
+    public boolean consq() {
+	return (root != null);
+    }
+
+    public T hd() {
+	return root.head;
+    }
+    public LnStrm<T> tl() {
+	return root.tail;
+    }
+}

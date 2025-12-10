@@ -3,7 +3,7 @@
 # Compiler and flags
 JAVAC = javac
 JAVA = java
-JAVAC_FLAGS = -cp . -d .
+JAVAC_FLAGS = -cp .
 JAVA_FLAGS = -cp .
 
 # Directories

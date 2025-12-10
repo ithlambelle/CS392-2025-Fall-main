@@ -109,6 +109,16 @@ public class Quiz02_03 {
 	    return this;
 	}
 
+	public int priority() {
+	    int empty = 0;
+	    for (int r = 0; r < SIZE; r++) {
+		for (int c = 0; c < SIZE; c++) {
+		    if (board[r][c] == 0) empty += 1;
+		}
+	    }
+	    return empty;
+	}
+
 	@Override
 	public FnList<FnGtree<Sudoku>> children() {
 	    int[] empty = nextEmpty();

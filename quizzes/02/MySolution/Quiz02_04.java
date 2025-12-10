@@ -70,6 +70,10 @@ public class Quiz02_04 {
 	// element as root; this yields height ceil(log2(n+1)) for n nodes.
 	AVLnode root = buildBalanced(0, 999_999);
 	// The resulting height is 20 (since log2(1_000_000 + 1) ≈ 19.9).
+	// Explanation: each subtree is constructed from a contiguous range
+	// with its midpoint as the root, so both children differ in height
+	// by at most 1. That inductively forces the tree to be complete,
+	// giving the smallest possible height for the node count.
 	System.out.println("Generated AVL height: " + treeHeight(root));
 	return isAVL(root);
     }
